@@ -82,16 +82,44 @@ export const S = {
     drafts: {},
   },
 };
+/* ---------- persistence: localStorage, plus any extra savers (e.g. the data file) ---------- */
+let savedAt = saved?.savedAt || 0;
+export const lastSavedAt = () => savedAt;
+export const isPersisted = j => !!(j && j.data && j.data.tasks);
+export const persistedState = () => ({ data: S.data, prefs: S.prefs, views: S.views, collapsed: S.ui.collapsed, savedAt: Date.now() });
+const savers = [];
+export const onSave = fn => savers.push(fn);
+function writeLocal(j) {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(j));
+  } catch {
+    /* storage full or blocked: keep working in memory */
+  }
+}
 export let _saveT;
+function saveNow() {
+  clearTimeout(_saveT);
+  _saveT = null;
+  const j = persistedState();
+  savedAt = j.savedAt;
+  writeLocal(j);
+  savers.forEach(fn => fn(j));
+}
 export function save() {
   clearTimeout(_saveT);
-  _saveT = setTimeout(() => {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify({ data: S.data, prefs: S.prefs, views: S.views, collapsed: S.ui.collapsed }));
-    } catch {
-      /* storage full or blocked: keep working in memory */
-    }
-  }, 150);
+  _saveT = setTimeout(saveNow, 150);
+}
+/* write a pending save before the tab closes or reloads */
+addEventListener('pagehide', () => _saveT && saveNow());
+/* replace the whole workspace with a persisted state read from elsewhere */
+export function applyPersisted(j) {
+  S.data = j.data;
+  S.prefs = Object.assign({}, DEFAULT_PREFS, j.prefs || {});
+  S.views = j.views || {};
+  S.ui.collapsed = !!j.collapsed;
+  Object.assign(S.ui, { drawer: null, modals: [], pop: null, sel: new Set(), editCell: null });
+  savedAt = j.savedAt || 0;
+  writeLocal(j);
 }
 
 /* ---------- lookups ---------- */

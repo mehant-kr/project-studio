@@ -8,6 +8,7 @@ import { av, pIcon } from '../ui/helpers.js';
 import { permsTable, teamsGrid } from './members.js';
 import { page404 } from './errors.js';
 import { SHORTCUTS } from '../overlays/modals.js';
+import { FS, fileSupported } from '../core/file-store.js';
 
 export const SET_NAV = [
   [
@@ -17,6 +18,7 @@ export const SET_NAV = [
       ['appearance', 'Appearance', 'palette'],
       ['language', 'Language', 'languages'],
       ['datetime', 'Date & time', 'clock'],
+      ['data', 'Data & storage', 'hard-drive'],
     ],
   ],
   [
@@ -208,6 +210,50 @@ export function settingsBody(sec, title) {
           ),
         )
       );
+    case 'data': {
+      const name = `<b>${esc(FS.name)}</b>`;
+      const status = !fileSupported
+        ? `<div class="alert warn">${ic('triangle-alert', 15)}<div><b>Saving to a file needs Chrome or Edge.</b><div class="muted">This browser keeps your workspace in its own storage only. Clearing site data erases it.</div></div></div>`
+        : {
+            off: `<div class="alert info">${ic('info', 15)}<div><b>Saving to this browser only.</b><div class="muted">Clearing site data, or opening Gr8r in another browser, starts from scratch. Connect a data file to keep a copy on disk.</div></div></div>`,
+            ready: `<div class="alert ok" style="margin:0">${ic('circle-check', 15)}<div><b>Saving to ${name}.</b><div class="muted">Every change is written to the file. Put it in iCloud Drive or Dropbox to back it up.</div></div></div>`,
+            locked: `<div class="alert warn">${ic('lock', 15)}<div><b>Access to ${name} is paused.</b><div class="muted">The browser asks again each session. Changes are kept in this browser until you allow it.</div></div></div>`,
+            error: `<div class="alert danger">${ic('circle-alert', 15)}<div><b>Changes aren't reaching ${name}.</b><div class="muted">${esc(FS.error)}</div></div></div>`,
+          }[FS.status];
+      const linked = FS.status !== 'off';
+      return (
+        H('Where your workspace is saved.') +
+        status +
+        (fileSupported
+          ? `<div class="sblock"><h2>Data file</h2>` +
+            (FS.status === 'locked' || FS.status === 'error'
+              ? srow(
+                  'Reconnect',
+                  `Allow Gr8r to keep reading and writing ${name}.`,
+                  `<button class="btn btn-primary" data-a="reconnectDataFile">${ic('lock-open', 14)}Allow access</button>`,
+                )
+              : '') +
+            srow(
+              linked ? 'Use a different file' : 'Create a data file',
+              'Choose where to save. Your current workspace is written to it.',
+              `<button class="btn ${linked ? 'btn-secondary' : 'btn-primary'}" data-a="createDataFile">${ic('file-plus', 14)}Create file…</button>`,
+            ) +
+            srow(
+              'Open an existing file',
+              'Load a data file saved earlier or on another computer. Replaces the workspace in this browser.',
+              `<button class="btn btn-secondary" data-a="openDataFile">${ic('folder-open', 14)}Open file…</button>`,
+            ) +
+            (linked
+              ? srow(
+                  'Stop saving to the file',
+                  'Keep the workspace in this browser only.',
+                  `<button class="btn btn-danger-ghost" data-a="disconnectDataFile">${ic('unplug', 14)}Disconnect</button>`,
+                )
+              : '') +
+            `</div>`
+          : '')
+      );
+    }
     case 'members':
       return (
         H(`${d.members.length} people have access to ${esc(d.ws.name)}.`) +

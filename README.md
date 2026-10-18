@@ -72,6 +72,14 @@ Dependencies point downward:
 - **Icons:** call `ic('name')` with any [Lucide](https://lucide.dev) icon name. The
   `virtual:icons` plugin bundles only the icons the source uses.
 
+## Where data is saved
+
+The workspace lives in `localStorage` (`gr8r.v2`); `src/data/seed.js` is only the starting data.
+In Chrome or Edge, **Settings → Data & storage** can also save every change to a JSON file you
+choose (File System Access API, `core/file-store.js`), for example in iCloud Drive. The browser asks
+to allow access to the file once per session; until then changes stay in `localStorage`, and on
+reconnect whichever copy was saved last wins.
+
 ## Continuous integration
 
 Every push and pull request runs lint, the format check and a production build
