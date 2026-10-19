@@ -193,6 +193,9 @@ A.set = el => {
 };
 A.toggleSide = () => {
   S.ui.collapsed = !S.ui.collapsed;
+  // after collapsing, hovering expands it again only once the pointer has left the sidebar
+  S.ui.peekBlocked = S.ui.collapsed;
+  S.ui.peek = false;
   save();
   render();
 };

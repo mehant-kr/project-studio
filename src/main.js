@@ -54,6 +54,7 @@ import './features/archive.js';
 import './actions/teams.js';
 import './actions/subtasks.js';
 import './actions/archive.js';
+import './actions/side-peek.js';
 import { S, D } from './core/store.js';
 import { isDesktop, startDb, flushDb } from './core/db.js';
 import { getCurrentWindow } from '@tauri-apps/api/window';
