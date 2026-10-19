@@ -55,10 +55,22 @@ import './actions/teams.js';
 import './actions/subtasks.js';
 import './actions/archive.js';
 import { S, D } from './core/store.js';
+import { isDesktop, startDb, flushDb } from './core/db.js';
+import { getCurrentWindow } from '@tauri-apps/api/window';
+import { toast } from './ui/toast.js';
 import { A } from './actions/actions.js';
 import { ROUTE_NAMES, render, go } from './shell/render.js';
 
-(function init() {
+(async function init() {
+  if (isDesktop) {
+    // the desktop app loads the SQLite database before the first render
+    try {
+      await startDb({ onError: e => toast(`Couldn't save to the database. ${e}`, { kind: 'err', ms: 8000 }) });
+    } catch (e) {
+      setTimeout(() => toast(`Couldn't open the database; changes are kept in the app cache only. ${e}`, { kind: 'err', ms: 10000 }));
+    }
+    getCurrentWindow().onCloseRequested(flushDb);
+  }
   document.documentElement.lang = 'en';
   if (!document.getElementById('sr-live')) {
     const l = document.createElement('div');

@@ -83,16 +83,43 @@ export const S = {
     drafts: {},
   },
 };
+/* ---------- persistence: localStorage, plus any extra savers (the desktop app's SQLite database) ---------- */
+let savedAt = saved?.savedAt || 0;
+export const lastSavedAt = () => savedAt;
+export const persistedState = () => ({ data: S.data, prefs: S.prefs, views: S.views, collapsed: S.ui.collapsed, savedAt: Date.now() });
+const savers = [];
+export const onSave = fn => savers.push(fn);
+function writeLocal(j) {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(j));
+  } catch {
+    /* storage full or blocked: keep working in memory */
+  }
+}
 export let _saveT;
+/* write a pending save right away (also before the page closes) */
+export function flushSave() {
+  if (!_saveT) return;
+  clearTimeout(_saveT);
+  _saveT = null;
+  const j = persistedState();
+  savedAt = j.savedAt;
+  writeLocal(j);
+  savers.forEach(fn => fn(j));
+}
 export function save() {
   clearTimeout(_saveT);
-  _saveT = setTimeout(() => {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify({ data: S.data, prefs: S.prefs, views: S.views, collapsed: S.ui.collapsed }));
-    } catch {
-      /* storage full or blocked: keep working in memory */
-    }
-  }, 150);
+  _saveT = setTimeout(flushSave, 150);
+}
+addEventListener('pagehide', flushSave);
+/* replace the whole workspace with a persisted state read from elsewhere */
+export function applyPersisted(j) {
+  S.data = j.data;
+  S.prefs = Object.assign({}, DEFAULT_PREFS, j.prefs || {});
+  S.views = j.views || {};
+  S.ui.collapsed = !!j.collapsed;
+  savedAt = j.savedAt || 0;
+  writeLocal(j);
 }
 
 /* ---------- lookups ---------- */

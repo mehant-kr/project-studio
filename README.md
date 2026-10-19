@@ -73,6 +73,24 @@ Dependencies point downward:
 - **Icons:** call `ic('name')` with any [Lucide](https://lucide.dev) icon name. The
   `virtual:icons` plugin bundles only the icons the source uses.
 
+## Desktop app (Tauri)
+
+`src-tauri/` wraps the same frontend as a macOS app with [Tauri 2](https://tauri.app). It needs
+the Rust toolchain (`rustup`) and the Xcode Command Line Tools.
+
+```bash
+npm run desktop         # run the app with hot reload (starts the Vite dev server)
+npm run desktop:build   # Pindrop Studio.app and a .dmg in src-tauri/target/release/bundle/
+```
+
+In the desktop app the workspace is saved to a SQLite database, `pindrop.db` in
+`~/Library/Application Support/com.pindrop.studio/` (`src/core/db.js`, via the Tauri SQL plugin). Each
+record (task, project, comment, …) is one row in the `records` table, stored as JSON; each save
+writes only the rows that changed, in a single statement. `localStorage` stays as a cache, and on
+start the newer copy wins. The web version is unchanged and keeps using `localStorage` only.
+
+The app is unsigned: the first time, right-click it in Finder and choose **Open**.
+
 ## Continuous integration
 
 Every push and pull request runs lint, the format check and a production build

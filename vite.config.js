@@ -49,5 +49,7 @@ function lucideSubset() {
 
 export default defineConfig({
   plugins: [lucideSubset()],
-  server: { port: 5173 },
+  // the desktop app (Tauri) expects the dev server on exactly this port
+  clearScreen: false,
+  server: { port: 5173, strictPort: true, watch: { ignored: ['**/src-tauri/**'] } },
 });

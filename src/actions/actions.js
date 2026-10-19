@@ -13,6 +13,7 @@ import { viewOf } from '../shell/view-engine.js';
 import { TEMPLATES, closeModal, openModal } from '../overlays/modals.js';
 import { closePop, openPop, tgt } from '../overlays/popovers.js';
 import { strengthMeter } from '../pages/settings.js';
+import { DB } from '../core/db.js';
 
 export const A = {},
   IN = {},
@@ -1816,6 +1817,7 @@ A.resetDemo = () => {
   });
 };
 A.toastInfo = el => toast(el.dataset.msg, { kind: 'info' });
+A.copyDbPath = () => copy(DB.path, 'Path copied');
 A.demoToast = el => {
   const v = el.dataset.v;
   if (v === 'err') toast("Your changes couldn't be saved.", { kind: 'err', action: 'Try again', onAction: () => toast('Saved') });
