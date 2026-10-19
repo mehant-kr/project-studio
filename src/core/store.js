@@ -3,7 +3,8 @@ import { TODAY, diffD, iso, parse, uid } from './utils.js';
 import { PCOLORS, TEAMS_SEED } from './constants.js';
 import { seed } from '../data/seed.js';
 
-export const STORE_KEY = 'gr8r.v2';
+export const STORE_KEY = 'pindrop.v2';
+const OLD_STORE_KEY = 'gr8r.v2'; // before the rename to Pindrop
 export const DEFAULT_PREFS = {
   theme: 'system',
   accent: 'indigo',
@@ -21,7 +22,7 @@ export const DEFAULT_PREFS = {
 };
 export function load() {
   try {
-    const raw = localStorage.getItem(STORE_KEY);
+    const raw = localStorage.getItem(STORE_KEY) || localStorage.getItem(OLD_STORE_KEY);
     if (raw) {
       const j = JSON.parse(raw);
       if (j && j.data && j.data.tasks) return j;

@@ -1,4 +1,4 @@
-# Gr8r Studio
+# Pindrop Studio
 
 A calm, structured project management workspace: home dashboard, inbox, my tasks, projects with
 board / list / table / calendar / timeline / files views, members, teams, activity and settings.
@@ -6,7 +6,7 @@ board / list / table / calendar / timeline / files views, members, teams, activi
 Built with plain JavaScript ES modules and CSS, bundled by [Vite](https://vite.dev). There is no
 UI framework and no runtime dependency.
 
-![Gr8r Studio home dashboard](docs/preview.png)
+![Pindrop Studio home dashboard](docs/preview.png)
 
 ## Getting started
 
@@ -25,7 +25,8 @@ npm run format    # Prettier
 
 ```
 index.html              HTML entry; loads src/main.js
-public/favicon.svg      brand mark
+public/favicon.png      browser tab icon
+public/pindrop-mark.png the Pindrop glyph, used as a mask for the in-app logo
 vite.config.js          Vite config, including the Lucide icon-subset plugin
 eslint.config.js        lint rules (ESLint flat config); formatting by Prettier (.prettierrc.json)
 .github/workflows/      CI: lint, format check, build
