@@ -541,7 +541,15 @@ A.editTask = el => {
   S.ui.errors = {};
   openModal({ type: 'task', edit: t.id });
 };
+/* a task needs a project: with none yet, start one instead */
+function needProject() {
+  if (visibleProjects().some(canSee)) return false;
+  toast('Create a project first, then add tasks to it.', { kind: 'info' });
+  A.newProject();
+  return true;
+}
 A.newTask = el => {
+  if (needProject()) return;
   const d = el?.dataset || {};
   const pid =
     d.project ||
@@ -686,6 +694,7 @@ A.commitComposer = () => {
     A.cancelComposer();
     return;
   }
+  if (needProject()) return;
   const f = { title: v, ...c.gb };
   f.project = f.project || projectFromKey(c.ctx) || curProjectId() || 'p1';
   if (c.ctx === 'mytasks') f.assignee = D().me;
