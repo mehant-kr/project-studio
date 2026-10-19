@@ -5,3 +5,6 @@ dist/
 __MACOSX/
 *.log
 .env*
+# desktop app build output (the app itself lives on the tauri branch)
+src-tauri/target/
+src-tauri/gen/
