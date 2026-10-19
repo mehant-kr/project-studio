@@ -266,31 +266,54 @@
   padding: 6px 8px 8px;
   border-top: 1px solid var(--border);
 }
-.collapsed .sitem {
+.collapsed:not(.peek) .sitem {
   justify-content: center;
   padding: 0;
 }
-.collapsed .sitem > span:not(.pico),
-.collapsed .sitem .ct,
-.collapsed .sgroup-h,
-.collapsed .ws-name,
-.collapsed .ws .chev-d,
-.collapsed .sitem .sdot,
-.collapsed .sitem .fav,
-.collapsed .sitem .hov,
-.collapsed .sub,
-.collapsed .side-search,
-.collapsed .sitem .chev {
+.collapsed:not(.peek) .sitem > span:not(.pico),
+.collapsed:not(.peek) .sitem .ct,
+.collapsed:not(.peek) .sgroup-h,
+.collapsed:not(.peek) .ws-name,
+.collapsed:not(.peek) .ws .chev-d,
+.collapsed:not(.peek) .sitem .sdot,
+.collapsed:not(.peek) .sitem .fav,
+.collapsed:not(.peek) .sitem .hov,
+.collapsed:not(.peek) .sub,
+.collapsed:not(.peek) .side-search,
+.collapsed:not(.peek) .sitem .chev {
   display: none !important;
 }
-.collapsed .sgroup {
+.collapsed:not(.peek) .sgroup {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid var(--border);
 }
-.collapsed .ws {
+.collapsed:not(.peek) .ws {
   justify-content: center;
   padding: 5px 0;
+}
+/* collapsed sidebar expanded by hover: drawn over the page at full width, page doesn't move */
+.shell.peek .side {
+  position: relative;
+  z-index: 45;
+  width: var(--side-w);
+  box-shadow: var(--shadow-pop);
+}
+.side.fx-peek {
+  animation: side-peek 0.16s var(--ease) both;
+}
+@keyframes side-peek {
+  from {
+    width: 52px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .side.fx-peek {
+    animation: none;
+  }
+}
+:root[data-motion='reduce'] .side.fx-peek {
+  animation: none;
 }
 
 .main {
