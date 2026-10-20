@@ -266,29 +266,29 @@
   padding: 6px 8px 8px;
   border-top: 1px solid var(--border);
 }
-.collapsed:not(.peek) .sitem {
+.collapsed:not(.peek) .side .sitem {
   justify-content: center;
   padding: 0;
 }
-.collapsed:not(.peek) .sitem > span:not(.pico),
-.collapsed:not(.peek) .sitem .ct,
-.collapsed:not(.peek) .sgroup-h,
-.collapsed:not(.peek) .ws-name,
-.collapsed:not(.peek) .ws .chev-d,
-.collapsed:not(.peek) .sitem .sdot,
-.collapsed:not(.peek) .sitem .fav,
-.collapsed:not(.peek) .sitem .hov,
-.collapsed:not(.peek) .sub,
-.collapsed:not(.peek) .side-search,
-.collapsed:not(.peek) .sitem .chev {
+.collapsed:not(.peek) .side .sitem > span:not(.pico),
+.collapsed:not(.peek) .side .sitem .ct,
+.collapsed:not(.peek) .side .sgroup-h,
+.collapsed:not(.peek) .side .ws-name,
+.collapsed:not(.peek) .side .ws .chev-d,
+.collapsed:not(.peek) .side .sitem .sdot,
+.collapsed:not(.peek) .side .sitem .fav,
+.collapsed:not(.peek) .side .sitem .hov,
+.collapsed:not(.peek) .side .sub,
+.collapsed:not(.peek) .side .side-search,
+.collapsed:not(.peek) .side .sitem .chev {
   display: none !important;
 }
-.collapsed:not(.peek) .sgroup {
+.collapsed:not(.peek) .side .sgroup {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid var(--border);
 }
-.collapsed:not(.peek) .ws {
+.collapsed:not(.peek) .side .ws {
   justify-content: center;
   padding: 5px 0;
 }
