@@ -81,7 +81,7 @@ document.addEventListener(
   e => {
     g = null;
     if (e.touches.length !== 1 || DRAG) return;
-    const row = e.target.closest?.('.trow[data-task-row]');
+    const row = e.target.closest?.('[data-task-row]');
     if (!row || e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
     const t = e.touches[0];
     g = { row, id: row.dataset.taskRow, x0: t.clientX, y0: t.clientY, dx: 0, swiping: false, under: null, armed: false };

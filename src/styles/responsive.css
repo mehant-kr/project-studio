@@ -145,7 +145,29 @@
     position: relative;
   }
   .bottomnav button.on {
-    color: var(--text);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  /* iOS-style tab bar: translucent, with an unread count on Inbox */
+  .bottomnav {
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    -webkit-backdrop-filter: saturate(1.6) blur(20px);
+    backdrop-filter: saturate(1.6) blur(20px);
+  }
+  .bottomnav .bcount {
+    position: absolute;
+    top: 1px;
+    left: calc(50% + 5px);
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: var(--red);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: center;
   }
   .bottomnav .bdot {
     position: absolute;
