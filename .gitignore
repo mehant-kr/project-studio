@@ -10,5 +10,7 @@ supabase/.temp/
 supabase/.branches/
 # desktop app build output (the app itself lives on the tauri branch)
 src-tauri/target/
-src-tauri/gen/
+src-tauri/gen/*
+# the generated Xcode project for the iPhone app is part of the source
+!src-tauri/gen/apple/
 !.env.example

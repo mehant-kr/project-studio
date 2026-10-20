@@ -266,31 +266,34 @@
   padding: 6px 8px 8px;
   border-top: 1px solid var(--border);
 }
-.collapsed:not(.peek) .side .sitem {
-  justify-content: center;
-  padding: 0;
-}
-.collapsed:not(.peek) .side .sitem > span:not(.pico),
-.collapsed:not(.peek) .side .sitem .ct,
-.collapsed:not(.peek) .side .sgroup-h,
-.collapsed:not(.peek) .side .ws-name,
-.collapsed:not(.peek) .side .ws .chev-d,
-.collapsed:not(.peek) .side .sitem .sdot,
-.collapsed:not(.peek) .side .sitem .fav,
-.collapsed:not(.peek) .side .sitem .hov,
-.collapsed:not(.peek) .side .sub,
-.collapsed:not(.peek) .side .side-search,
-.collapsed:not(.peek) .side .sitem .chev {
-  display: none !important;
-}
-.collapsed:not(.peek) .side .sgroup {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border);
-}
-.collapsed:not(.peek) .side .ws {
-  justify-content: center;
-  padding: 5px 0;
+/* icon-only sidebar; at 900px and below the sidebar is the slide-in menu, which always shows labels */
+@media (min-width: 901px) {
+  .collapsed:not(.peek) .side .sitem {
+    justify-content: center;
+    padding: 0;
+  }
+  .collapsed:not(.peek) .side .sitem > span:not(.pico),
+  .collapsed:not(.peek) .side .sitem .ct,
+  .collapsed:not(.peek) .side .sgroup-h,
+  .collapsed:not(.peek) .side .ws-name,
+  .collapsed:not(.peek) .side .ws .chev-d,
+  .collapsed:not(.peek) .side .sitem .sdot,
+  .collapsed:not(.peek) .side .sitem .fav,
+  .collapsed:not(.peek) .side .sitem .hov,
+  .collapsed:not(.peek) .side .sub,
+  .collapsed:not(.peek) .side .side-search,
+  .collapsed:not(.peek) .side .sitem .chev {
+    display: none !important;
+  }
+  .collapsed:not(.peek) .side .sgroup {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .collapsed:not(.peek) .side .ws {
+    justify-content: center;
+    padding: 5px 0;
+  }
 }
 /* collapsed sidebar expanded by hover: drawn over the page at full width, page doesn't move */
 .shell.peek .side {
@@ -470,6 +473,21 @@ h3.sub {
 }
 .bottomnav {
   display: none;
+}
+/* phone: floating New task button above the tab bar */
+.fab {
+  display: none;
+  position: fixed;
+  right: 16px;
+  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  z-index: 44;
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  background: var(--accent);
+  color: var(--text-inv);
+  place-items: center;
+  box-shadow: 0 8px 20px -6px color-mix(in srgb, var(--accent) 60%, transparent);
 }
 .offline-bar {
   display: flex;
