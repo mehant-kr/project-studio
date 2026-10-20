@@ -1,7 +1,7 @@
 /* ---------- cloud sync: Supabase (Postgres) for the desktop and iPhone apps ----------
    The local database (db.js) stays the fast, offline copy; this mirrors the same
    one-row-per-record shape to the `records` table (supabase/migrations) and pulls
-   other devices' changes back. Sign-in is an emailed 6-digit code.
+   other devices' changes back. Sign-in is email and password.
 
    A sync: rows that changed locally since the last sync (by hash) are pushed in
    one upsert; rows changed in the cloud since the cursor are pulled and merged,
@@ -19,7 +19,7 @@ const inBrowserForTests = import.meta.env.DEV && import.meta.env.VITE_CLOUD_IN_B
 export const cloudConfigured = !!(URL_ && ANON);
 export const cloudAvailable = cloudConfigured && (isDesktop || inBrowserForTests);
 
-/* status: off · signedout · codesent · choose · ready · error */
+/* status: off · signedout · choose · ready · error */
 export const CLOUD = { status: 'off', email: '', error: '', lastSync: 0, remoteCount: 0 };
 const BASE_KEY = 'pindrop.cloud.v1';
 /* rows that describe this device, not the workspace */
@@ -225,19 +225,22 @@ async function begin(u) {
 }
 
 /* ---------- sign-in and controls (called from Settings) ---------- */
-export async function sendCode(email) {
-  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
-  if (error) throw error;
+export async function signIn(email, password) {
   CLOUD.email = email;
-  setStatus('codesent');
-}
-export async function verifyCode(code) {
-  const { data, error } = await sb.auth.verifyOtp({ email: CLOUD.email, token: code, type: 'email' });
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
   if (error) throw error;
   await begin(data.user);
 }
-export function changeEmail() {
-  setStatus('signedout');
+export async function createAccount(email, password) {
+  CLOUD.email = email;
+  const { data, error } = await sb.auth.signUp({ email, password });
+  if (error) throw error;
+  // with "Confirm email" on, Supabase sends a link and returns no session
+  if (!data.session)
+    throw new Error(
+      'Your Supabase project still requires email confirmation. Turn off "Confirm email" in Authentication → Sign In / Providers → Email, then try again.',
+    );
+  await begin(data.user);
 }
 export const chooseStart = mode => queueSync(mode);
 export const syncNow = () => queueSync('merge');

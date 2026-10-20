@@ -454,15 +454,11 @@ function cloudBlock() {
   let body;
   if (C.status === 'off') body = `<p class="muted" style="font-size:13px;margin:10px 0 0">Connecting…</p>`;
   else if (C.status === 'signedout')
-    body = `<p class="muted" style="font-size:13px;margin:10px 0 12px">Sign in to keep this workspace in sync across your Mac and iPhone. We'll email you a 6-digit code.</p>
-      <form data-submit="cloudSendCode" class="col" style="gap:8px;max-width:360px"><label class="label" for="cloud-email">Email</label>
-      <div class="row"><input class="input ${S.ui.errors.cloud ? 'is-error' : ''}" id="cloud-email" type="email" autocomplete="email" placeholder="you@example.com" value="${esc(C.email)}" style="flex:1">
-      <button class="btn btn-primary" data-a="cloudSendCode" ${busy}>Send code</button></div>${err}</form>`;
-  else if (C.status === 'codesent')
-    body = `<p class="muted" style="font-size:13px;margin:10px 0 12px">Enter the 6-digit code sent to <b>${esc(C.email)}</b>.</p>
-      <form data-submit="cloudVerify" class="col" style="gap:8px;max-width:360px"><label class="label" for="cloud-code">Code</label>
-      <div class="row"><input class="input mono ${S.ui.errors.cloud ? 'is-error' : ''}" id="cloud-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" style="width:140px;letter-spacing:.2em" autofocus>
-      <button class="btn btn-primary" data-a="cloudVerify" ${busy}>Verify</button><button type="button" class="btn btn-ghost" data-a="cloudChangeEmail">Use a different email</button></div>${err}</form>`;
+    body = `<p class="muted" style="font-size:13px;margin:10px 0 12px">Sign in to keep this workspace in sync across your Mac and iPhone. First time? Enter an email and a password, then choose Create account.</p>
+      <form data-submit="cloudSignIn" class="col" style="gap:10px;max-width:360px">
+      <div class="field"><label class="label" for="cloud-email">Email</label><input class="input ${S.ui.errors.cloud ? 'is-error' : ''}" id="cloud-email" type="email" autocomplete="username" placeholder="you@example.com" value="${esc(C.email)}"></div>
+      <div class="field"><label class="label" for="cloud-password">Password</label><input class="input ${S.ui.errors.cloud ? 'is-error' : ''}" id="cloud-password" type="password" autocomplete="current-password"></div>
+      ${err}<div class="row"><button class="btn btn-primary" data-a="cloudSignIn" ${busy}>Sign in</button><button type="button" class="btn btn-secondary" data-a="cloudCreateAccount" ${busy}>Create account</button></div></form>`;
   else if (C.status === 'choose')
     body = `<div class="alert warn" style="margin-top:10px">${ic('triangle-alert', 15)}<div><b>This device and your cloud account both have a workspace.</b><div class="muted">Choose which one to keep. The other is replaced.</div></div></div>
       <div class="row" style="margin-top:12px;flex-wrap:wrap"><button class="btn btn-primary" data-a="cloudChoose" data-v="cloud" ${busy}>Use the cloud workspace</button><button class="btn btn-danger-ghost" data-a="cloudChoose" data-v="local" ${busy}>Replace the cloud with this device's workspace</button></div>`;

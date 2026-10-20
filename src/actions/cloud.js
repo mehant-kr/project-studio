@@ -1,10 +1,10 @@
 /* =====================================================================
-   ACTIONS · CLOUD SYNC: sign in with an emailed code, choose a starting
+   ACTIONS · CLOUD SYNC: sign in or create an account, choose a starting
    workspace, sync now, sign out (Settings → Data & storage)
    ===================================================================== */
 import { $ } from '../core/utils.js';
 import { S } from '../core/store.js';
-import { CLOUD, changeEmail, chooseStart, errorText, sendCode, signOut, syncNow, verifyCode } from '../core/cloud.js';
+import { CLOUD, chooseStart, createAccount, errorText, signIn, signOut, syncNow } from '../core/cloud.js';
 import { toast } from '../ui/toast.js';
 import { render } from '../shell/render.js';
 import { A, confirmDlg } from './actions.js';
@@ -25,30 +25,33 @@ async function busy(fn) {
   render();
 }
 
-A.cloudSendCode = () => {
+/* read and check the form; null (with the error shown) when it isn't filled in properly */
+function credentials(isNew) {
   const email = $('#cloud-email')?.value.trim() || '';
-  if (!EMAIL_RE.test(email)) {
-    S.ui.errors.cloud = 'Enter a valid email address';
+  const password = $('#cloud-password')?.value || '';
+  const err = !EMAIL_RE.test(email)
+    ? 'Enter a valid email address'
+    : password.length < (isNew ? 8 : 1)
+      ? isNew
+        ? 'Use at least 8 characters for the password'
+        : 'Enter your password'
+      : '';
+  if (err) {
+    CLOUD.email = email;
+    S.ui.errors.cloud = err;
     render();
-    return;
+    return null;
   }
-  busy(() => sendCode(email));
+  return { email, password };
+}
+const signedIn = () => CLOUD.status === 'ready' && toast(`Syncing as ${CLOUD.email}`);
+A.cloudSignIn = () => {
+  const c = credentials(false);
+  if (c) busy(() => signIn(c.email, c.password).then(signedIn));
 };
-A.cloudVerify = () => {
-  const code = $('#cloud-code')?.value.trim() || '';
-  if (!/^\d{6}$/.test(code)) {
-    S.ui.errors.cloud = 'Enter the 6-digit code from the email';
-    render();
-    return;
-  }
-  busy(async () => {
-    await verifyCode(code);
-    if (CLOUD.status === 'ready') toast(`Syncing as ${CLOUD.email}`);
-  });
-};
-A.cloudChangeEmail = () => {
-  S.ui.errors.cloud = '';
-  changeEmail();
+A.cloudCreateAccount = () => {
+  const c = credentials(true);
+  if (c) busy(() => createAccount(c.email, c.password).then(signedIn));
 };
 A.cloudChoose = el => {
   const mode = el.dataset.v;

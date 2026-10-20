@@ -196,7 +196,7 @@ password_requirements = ""
 
 [auth.rate_limit]
 # Number of emails that can be sent per hour. Requires auth.email.smtp to be enabled.
-email_sent = 100
+email_sent = 2
 # Number of SMS messages that can be sent per hour. Requires auth.sms to be enabled.
 sms_sent = 30
 # Number of anonymous sign-ins that can be made per hour per IP address. Requires enable_anonymous_sign_ins = true.
@@ -242,15 +242,6 @@ otp_expiry = 3600
 # pass = "env(SENDGRID_API_KEY)"
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
-
-# Pindrop signs in with an emailed 6-digit code: new accounts get "confirmation", returning ones "magic_link"
-[auth.email.template.confirmation]
-subject = "Your Pindrop Studio sign-in code"
-content_path = "./supabase/templates/code.html"
-
-[auth.email.template.magic_link]
-subject = "Your Pindrop Studio sign-in code"
-content_path = "./supabase/templates/code.html"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]

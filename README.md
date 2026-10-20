@@ -100,9 +100,8 @@ other signed-in devices (`src/core/cloud.js`). The local database stays the offl
 1. Create a project at [supabase.com](https://supabase.com).
 2. In the SQL editor, run `supabase/migrations/0001_records.sql` (the `records` table, row-level
    security and realtime).
-3. Authentication → Email Templates: in both **Confirm signup** and **Magic Link**, put `{{ .Token }}`
-   in the message so the email contains the 6-digit sign-in code (`supabase/templates/code.html` is a
-   ready-made body).
+3. Authentication → Sign In / Providers → **Email**: keep the provider on and turn **Confirm email**
+   off. The app signs in with email and password, so no emails are sent.
 4. Copy `.env.example` to `.env.local` and fill in the project URL and anon key (Project Settings →
    API), then rebuild with `npm run desktop:build`.
 
