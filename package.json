@@ -11,6 +11,8 @@
     "tauri": "tauri",
     "desktop": "tauri dev",
     "desktop:build": "tauri build",
+    "ios": "tauri ios dev",
+    "ios:build": "tauri ios build",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

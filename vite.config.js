@@ -51,5 +51,12 @@ export default defineConfig({
   plugins: [lucideSubset()],
   // the desktop app (Tauri) expects the dev server on exactly this port
   clearScreen: false,
-  server: { port: 5173, strictPort: true, watch: { ignored: ['**/src-tauri/**'] } },
+  server: {
+    port: 5173,
+    strictPort: true,
+    // `tauri ios dev` on a real iPhone sets TAURI_DEV_HOST so the phone can reach this server
+    host: process.env.TAURI_DEV_HOST || false,
+    hmr: process.env.TAURI_DEV_HOST ? { protocol: 'ws', host: process.env.TAURI_DEV_HOST, port: 1421 } : undefined,
+    watch: { ignored: ['**/src-tauri/**'] },
+  },
 });

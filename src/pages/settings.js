@@ -8,7 +8,7 @@ import { av, pIcon } from '../ui/helpers.js';
 import { permsTable, teamsGrid } from './members.js';
 import { page404 } from './errors.js';
 import { SHORTCUTS } from '../overlays/modals.js';
-import { DB, isDesktop } from '../core/db.js';
+import { DB, isDesktop, isIOS } from '../core/db.js';
 import { CLOUD, cloudAvailable, cloudConfigured } from '../core/cloud.js';
 
 export const SET_NAV = [
@@ -216,14 +216,14 @@ export function settingsBody(sec, title) {
         H('Where your workspace is saved.') +
         (DB.error
           ? `<div class="alert danger">${ic('circle-alert', 15)}<div><b>The last change didn't reach the database.</b><div class="muted">${esc(DB.error)}</div></div></div>`
-          : `<div class="alert ok" style="margin:0">${ic('circle-check', 15)}<div><b>Saving to a SQLite database on this Mac.</b><div class="muted">Every change is written to the database as you work.</div></div></div>`) +
+          : `<div class="alert ok" style="margin:0">${ic('circle-check', 15)}<div><b>Saving to a SQLite database on this device.</b><div class="muted">Every change is written to the database as you work.</div></div></div>`) +
         `<div class="sblock"><h2>Database</h2>` +
         srow(
           'Location',
           `<span class="mono" style="word-break:break-all">${esc(DB.path)}</span>`,
           `<button class="btn btn-secondary btn-sm" data-a="copyDbPath">${ic('copy', 13)}Copy path</button>`,
         ) +
-        srow('Back up', 'Quit Pindrop Studio, then copy pindrop.db. Copy it back to the same folder to restore.', '') +
+        (isIOS ? '' : srow('Back up', 'Quit Pindrop Studio, then copy pindrop.db. Copy it back to the same folder to restore.', '')) +
         `</div>` +
         cloudBlock()
       );

@@ -57,7 +57,7 @@ import './actions/archive.js';
 import './actions/side-peek.js';
 import './actions/cloud.js';
 import { S, D, task } from './core/store.js';
-import { isDesktop, startDb, flushDb } from './core/db.js';
+import { isDesktop, isIOS, startDb, flushDb } from './core/db.js';
 import { CLOUD, cloudAvailable, startCloud } from './core/cloud.js';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { toast } from './ui/toast.js';
@@ -72,7 +72,10 @@ import { ROUTE_NAMES, render, go } from './shell/render.js';
     } catch (e) {
       setTimeout(() => toast(`Couldn't open the database; changes are kept in the app cache only. ${e}`, { kind: 'err', ms: 10000 }));
     }
-    getCurrentWindow().onCloseRequested(flushDb);
+    // macOS: finish saving before the window closes; iOS has no window close
+    if (!isIOS) getCurrentWindow().onCloseRequested(flushDb);
+    // iOS can end a backgrounded app without warning, so save the moment the app is hidden
+    document.addEventListener('visibilitychange', () => document.visibilityState === 'hidden' && flushDb());
   }
   if (cloudAvailable) {
     // cloud sync runs alongside: it never blocks start-up, and the app works offline

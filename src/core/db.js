@@ -11,7 +11,8 @@ import Database from '@tauri-apps/plugin-sql';
 import { applyPersisted, flushSave, lastSavedAt, onSave, persistedState } from './store.js';
 import { fromRows, key, toRows } from './records.js';
 
-export const isDesktop = isTauri();
+export const isDesktop = isTauri(); // the native app: macOS or iOS
+export const isIOS = isDesktop && (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent)));
 export const DB = { path: '', error: '' };
 let db = null;
 

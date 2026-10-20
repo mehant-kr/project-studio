@@ -108,6 +108,26 @@ other signed-in devices (`src/core/cloud.js`). The local database stays the offl
 Then sign in from **Settings → Data & storage → Cloud sync**. Each record syncs on its own and the
 newest write wins; other devices receive changes live.
 
+## iPhone app (Tauri iOS)
+
+The same code also builds for iPhone (`src-tauri/gen/apple/` is the generated Xcode project). It
+needs full Xcode with its iOS platform, the Rust iOS targets and CocoaPods:
+
+```bash
+rustup target add aarch64-apple-ios aarch64-apple-ios-sim
+brew install cocoapods
+xcrun simctl list devices available   # pick a simulator name
+npm run ios -- "iPhone Duo"           # run in that simulator, with hot reload
+```
+
+The iPhone app uses the same local SQLite database and cloud sync as the Mac app; sign in under
+**Settings → Data & storage → Cloud sync** with the same account to share the workspace.
+
+To install on your own iPhone: in Xcode → Settings → Accounts, add your Apple ID; open
+`src-tauri/gen/apple/pindrop-studio.xcodeproj`, choose your account as the signing **Team**, connect
+the phone and run `npm run ios -- --host` (the phone must be on the same Wi-Fi as the Mac). With a free
+Apple account the app has to be reinstalled every 7 days.
+
 ## Continuous integration
 
 Every push and pull request runs lint, the format check and a production build
