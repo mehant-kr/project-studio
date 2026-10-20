@@ -32,9 +32,14 @@
   .shell.mnav .side {
     transform: none;
   }
-  .shell.collapsed .side .sitem {
-    justify-content: flex-start;
-    padding: 0 8px;
+  /* phones: keep the slide-in menu clear of the notch and home indicator, and content clear of landscape insets */
+  .side {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .main {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
   }
   .side-scrim {
     display: block;
@@ -96,6 +101,24 @@
 @media (max-width: 640px) {
   :root {
     --topbar-h: 50px;
+  }
+  /* iPhone: the top bar sits below the notch / Dynamic Island */
+  .topbar {
+    height: calc(var(--topbar-h) + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  /* room to scroll the last rows above the tab bar and the + button */
+  .content {
+    padding-bottom: calc(136px + env(safe-area-inset-bottom, 0px));
+  }
+  .fab {
+    display: grid;
+  }
+  /* iOS zooms in on fields under 16px when they get focus */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
   }
   .bottomnav {
     display: flex;

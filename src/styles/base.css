@@ -20,6 +20,9 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
   font-feature-settings: 'ss01', 'cv11';
+  /* touch: no grey flash on tap, no rubber-banding of the whole app */
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
 }
 button,
 input,

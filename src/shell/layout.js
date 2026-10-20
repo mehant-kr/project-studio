@@ -38,6 +38,7 @@ export function renderShell() {
       <div class="content ${u.fx.route ? 'fx-route' : ''}" id="main-content" tabindex="-1" data-keep="c:${u.route}:${u.params.id || ''}:${u.params.tab || ''}:${u.params.sec || ''}">${u.loading ? skeleton() : renderPage()}</div>
     </main>
     ${renderBottomNav()}
+    <button class="fab" data-a="newTask" aria-label="New task">${ic('plus', 24)}</button>
   </div>`;
 }
 export function renderPage() {
