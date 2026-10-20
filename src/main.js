@@ -56,6 +56,8 @@ import './actions/subtasks.js';
 import './actions/archive.js';
 import './actions/side-peek.js';
 import './actions/touch-drag.js';
+import './actions/touch-swipe.js';
+import './actions/touch-sheet.js';
 import { S, D } from './core/store.js';
 import { A } from './actions/actions.js';
 import { ROUTE_NAMES, render, go } from './shell/render.js';

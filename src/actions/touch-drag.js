@@ -6,6 +6,7 @@
    ===================================================================== */
 import { $ } from '../core/utils.js';
 import { S } from '../core/store.js';
+import { haptic } from '../core/haptics.js';
 import { DRAG, dragEnd, dragOver, dragStart, drop } from './drag-drop.js';
 
 const HOLD = 450; // ms to hold before the item lifts
@@ -43,6 +44,7 @@ function begin() {
   Object.assign(ghost.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
   document.body.appendChild(ghost);
   drag = { ghost, dx: x - r.left, dy: y - r.top, x, y, raf: 0 };
+  haptic('medium');
   move(x, y);
   drag.raf = requestAnimationFrame(edgeScroll);
 }
@@ -97,6 +99,7 @@ function finish(commit) {
   // the lift ends in a tap on the item: don't let it also open the task
   S.ui.suppressClick = true;
   setTimeout(() => (S.ui.suppressClick = false), 400);
+  if (commit && DRAG) haptic('light');
   if (commit && DRAG) drop({ target: document.elementFromPoint(x, y) || document.body, preventDefault() {}, dataTransfer: null });
   dragEnd();
 }

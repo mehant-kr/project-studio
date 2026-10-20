@@ -137,6 +137,11 @@
 .drawer-scrim.full {
   background: var(--overlay);
 }
+/* phone-only: the dimmed backdrop behind the task sheet, and its grab handle */
+.drawer-scrim.phone,
+.sheet-grab {
+  display: none;
+}
 .drawer-scrim.full.enter {
   animation: fade 0.18s both;
 }
@@ -809,4 +814,47 @@
     opacity: 0;
     transform: translateY(4px);
   }
+}
+@keyframes sheetUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+/* swipe actions on task rows (actions/touch-swipe.js): the row slides over a coloured band */
+.trow.swiping {
+  position: relative;
+  z-index: 2;
+  background: var(--surface);
+}
+.swipe-under {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-radius: var(--r);
+  color: #fff;
+  font-weight: 600;
+  background: var(--text-4);
+  transition: background 0.15s;
+}
+.swipe-under span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  visibility: hidden;
+}
+.swipe-under.to-snooze .sw-snooze,
+.swipe-under.to-done .sw-done {
+  visibility: visible;
+}
+.swipe-under.armed.to-done {
+  background: var(--green);
+}
+.swipe-under.armed.to-snooze {
+  background: var(--amber);
 }
