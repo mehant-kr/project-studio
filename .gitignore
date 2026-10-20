@@ -5,6 +5,9 @@ dist/
 __MACOSX/
 *.log
 .env*
+# Supabase CLI caches (the cloud setup lives on the tauri branch)
+supabase/.temp/
+supabase/.branches/
 # desktop app build output (the app itself lives on the tauri branch)
 src-tauri/target/
 src-tauri/gen/
