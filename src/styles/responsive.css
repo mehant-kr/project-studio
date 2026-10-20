@@ -202,18 +202,41 @@
   .tlist .trow > div.c-lbl:empty {
     display: none;
   }
+  /* phones: the task panel is a bottom sheet that stops just below the status bar */
   .drawer,
   .drawer.full {
     width: 100vw;
     right: 0;
     left: 0;
-    top: 0;
+    top: calc(env(safe-area-inset-top, 0px) + 10px);
     bottom: 0;
     transform: none;
-    border-radius: 0;
+    border-radius: 14px 14px 0 0;
     border: 0;
-    /* full screen on phones: keep the header (with its close button) below the status bar */
-    padding-top: env(safe-area-inset-top, 0px);
+    box-shadow: 0 -10px 30px -12px rgba(0, 0, 0, 0.35);
+  }
+  .drawer.enter,
+  .drawer.full.enter {
+    animation: sheetUp 0.32s var(--ease-drawer) both;
+  }
+  .drawer-scrim.phone {
+    display: block;
+    background: var(--overlay);
+  }
+  .drawer-scrim.phone.enter {
+    animation: fade 0.2s both;
+  }
+  .sheet-grab {
+    display: block;
+    flex-shrink: 0;
+    width: 36px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--border-strong);
+    margin: 6px auto 0;
+  }
+  .drawer-h {
+    touch-action: none;
   }
   .drawer-b,
   .drawer.full .drawer-b {
