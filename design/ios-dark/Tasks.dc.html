@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pindrop · My Tasks</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 393px; height: 852px; position: relative; overflow: hidden; background: #000000; color: #ffffff; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif; font-size: 17px; letter-spacing: -0.01em">
+  <div style="height: 100%; overflow-y: auto; padding: 54px 0 150px; box-sizing: border-box">
+    <nav style="display: flex; align-items: center; justify-content: flex-end; height: 44px; padding: 0 8px">
+      <button aria-label="Sort and filter" style="width: 44px; height: 44px; border: 0; background: transparent; color: #7d7aff; display: grid; place-items: center"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg></button>
+      <button aria-label="More" style="width: 44px; height: 44px; border: 0; background: transparent; color: #7d7aff; display: grid; place-items: center"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+    </nav>
+    <header style="padding: 2px 20px 0">
+      <h1 style="margin: 0; font-size: 34px; line-height: 41px; font-weight: 700; letter-spacing: 0.01em">My Tasks</h1>
+    </header>
+    <label style="margin: 10px 16px 0; height: 36px; border-radius: 10px; background: #1c1c1e; display: flex; align-items: center; gap: 6px; padding: 0 8px; color: #98989f">
+      <svg class="ic" viewBox="0 0 24 24" style="width: 17px; height: 17px" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search tasks</span>
+      <input placeholder="Search" style="flex: 1; border: 0; background: transparent; color: #ffffff; font: 17px -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif; outline: none">
+    </label>
+
+    <sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+      <section style="padding: 22px 16px 0">
+        <h2 style="margin: 0 4px 8px; font-size: 20px; font-weight: 700; color: {{g.color}}">{{g.name}}</h2>
+        <div style="background: #1c1c1e; border-radius: 12px; overflow: hidden">
+          <sc-for list="{{g.tasks}}" as="t" hint-placeholder-count="2">
+            <div style="position: relative; overflow: hidden">
+              <sc-if value="{{t.swiped}}" hint-placeholder-val="{{false}}">
+                <div style="position: absolute; top: 0; right: 0; bottom: 0; display: flex">
+                  <button style="width: 74px; border: 0; background: #5e5ce6; color: #fff; font: 600 13px -apple-system, Inter, system-ui, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg class="ic" viewBox="0 0 24 24" style="width: 20px; height: 20px" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/><path d="M6.38 18.7 4 21"/><path d="M17.64 18.67 20 21"/></svg>Snooze</button>
+                  <button style="width: 74px; border: 0; background: #ff9f0a; color: #000; font: 600 13px -apple-system, Inter, system-ui, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg class="ic" viewBox="0 0 24 24" style="width: 20px; height: 20px" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>Flag</button>
+                  <button style="width: 74px; border: 0; background: #ff453a; color: #fff; font: 600 13px -apple-system, Inter, system-ui, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px"><svg class="ic" viewBox="0 0 24 24" style="width: 20px; height: 20px" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>Delete</button>
+                </div>
+              </sc-if>
+              <div style="position: relative; background: #1c1c1e; display: flex; align-items: center; min-height: 58px; transform: {{t.shift}}">
+                <button onClick="{{t.toggle}}" aria-label="{{t.label}}" style="width: 52px; height: 52px; border: 0; background: transparent; display: grid; place-items: center; flex-shrink: 0">
+                  <sc-if value="{{t.done}}" hint-placeholder-val="{{false}}"><span style="width: 24px; height: 24px; border-radius: 12px; background: #5e5ce6; display: grid; place-items: center; color: #fff"><svg class="ic" viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke-width: 3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span></sc-if>
+                  <sc-if value="{{t.open}}" hint-placeholder-val="{{true}}"><span style="width: 24px; height: 24px; border-radius: 12px; border: 2px solid {{t.ring}}; box-sizing: border-box"></span></sc-if>
+                </button>
+                <a href="Detail.dc.html" style="flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 8px 16px 8px 0; align-self: stretch; border-bottom: {{t.sep}}">
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <span style="color: {{t.color}}; text-decoration: {{t.strike}}">{{t.title}}</span>
+                    <span style="font-size: 15px; color: {{t.metaColor}}">{{t.meta}}</span>
+                  </span>
+                  <sc-if value="{{t.flagged}}" hint-placeholder-val="{{false}}"><svg class="ic" viewBox="0 0 24 24" style="width: 17px; height: 17px; color: #ff9f0a; fill: #ff9f0a" role="img" aria-label="Flagged"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg></sc-if>
+                </a>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-for>
+  </div>
+
+  <nav aria-label="Tabs" style="position: absolute; left: 14px; right: 90px; bottom: 26px; height: 66px; padding: 5px; box-sizing: border-box; border-radius: 33px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)), rgba(30, 30, 32, 0.55); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); border: 1px solid rgba(255, 255, 255, 0.14); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 1px rgba(255, 255, 255, 0.06), 0 12px 30px rgba(0, 0, 0, 0.55)">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; justify-content: center; border-radius: 28px; color: rgba(255, 255, 255, 0.86); font-size: 10px; font-weight: 500"><svg class="ic" viewBox="0 0 24 24" style="width: 26px; height: 26px" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>Today</a>
+    <a href="Tasks.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 2px; justify-content: center; border-radius: 28px; color: #ffffff; font-size: 10px; font-weight: 600; background: radial-gradient(120% 100% at 30% 15%, rgba(130, 145, 255, 0.24), rgba(255, 255, 255, 0.07) 65%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.08)"><svg class="ic" viewBox="0 0 24 24" style="width: 26px; height: 26px" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>My Tasks</a>
+    <a href="Projects.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; justify-content: center; border-radius: 28px; color: rgba(255, 255, 255, 0.86); font-size: 10px; font-weight: 500"><svg class="ic" viewBox="0 0 24 24" style="width: 26px; height: 26px" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>Projects</a>
+    <a href="Inbox.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; justify-content: center; border-radius: 28px; color: rgba(255, 255, 255, 0.86); font-size: 10px; font-weight: 500; position: relative"><svg class="ic" viewBox="0 0 24 24" style="width: 26px; height: 26px" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>Inbox<span style="position: absolute; top: -3px; left: 50%; margin-left: 5px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #ff453a; color: #fff; font-size: 12px; font-weight: 600; line-height: 18px; text-align: center">2</span></a>
+    <a href="Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; justify-content: center; border-radius: 28px; color: rgba(255, 255, 255, 0.86); font-size: 10px; font-weight: 500"><svg class="ic" viewBox="0 0 24 24" style="width: 26px; height: 26px" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</a>
+  </nav>
+  <a href="QuickAdd.dc.html" aria-label="New task" style="position: absolute; right: 14px; bottom: 26px; width: 66px; height: 66px; border-radius: 33px; display: grid; place-items: center; color: #ffffff; background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.03)), rgba(94, 92, 230, 0.62); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), inset 0 -2px 6px rgba(0, 0, 0, 0.18), 0 12px 30px rgba(0, 0, 0, 0.55), 0 6px 20px rgba(94, 92, 230, 0.35)"><svg class="ic" viewBox="0 0 24 24" style="width: 30px; height: 30px; stroke-width: 2.4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":393,"height":852}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { done: { r3: true } };
+  }
+  renderVals() {
+    const sec = 'rgba(235, 235, 245, 0.6)';
+    const groups = [
+      { name: 'Overdue', color: '#ff6961', tasks: [{ id: 'o1', title: 'Return library books', meta: 'Personal · Yesterday', metaColor: '#ff6961' }] },
+      { name: 'Today', color: '#ffffff', tasks: [
+        { id: 't1', title: 'Split Utility Bills', meta: 'Personal · 6:00 PM', metaColor: sec, flag: true },
+        { id: 't2', title: 'Study Quiz 2', meta: 'Reinforcement Learning', metaColor: sec, swiped: true },
+      ] },
+      { name: 'Tomorrow', color: '#ffffff', tasks: [{ id: 'm1', title: 'Split Costco Bill', meta: 'Personal', metaColor: sec, flag: true }] },
+      { name: 'This Week', color: '#ffffff', tasks: [
+        { id: 'w1', title: 'Get OPT picture done', meta: 'Personal · Wed', metaColor: sec },
+        { id: 'r3', title: 'Read PPO paper', meta: 'Reinforcement Learning · Thu', metaColor: sec },
+        { id: 'w2', title: 'Problem set 3', meta: 'Reinforcement Learning · Fri', metaColor: sec },
+      ] },
+    ];
+    const done = this.state.done;
+    return {
+      groups: groups.map(g => ({
+        ...g,
+        tasks: g.tasks.map((t, i) => {
+          const d = !!done[t.id];
+          return {
+            ...t,
+            done: d,
+            open: !d,
+            ring: g.name === 'Overdue' ? '#ff453a' : t.flag ? '#ff9f0a' : '#636366',
+            color: d ? sec : '#ffffff',
+            strike: d ? 'line-through' : 'none',
+            flagged: !!t.flag && !d,
+            swiped: !!t.swiped && !d,
+            shift: t.swiped && !d ? 'translateX(-222px)' : 'none',
+            sep: i < g.tasks.length - 1 ? '1px solid #38383a' : '0',
+            label: (d ? 'Mark not done: ' : 'Complete: ') + t.title,
+            toggle: () => this.setState({ done: { ...this.state.done, [t.id]: !this.state.done[t.id] } }),
+          };
+        }),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pindrop · Task detail</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 393px; height: 852px; position: relative; overflow: hidden; background: #000000; color: #ffffff; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif; font-size: 17px; letter-spacing: -0.01em">
+  <nav style="position: absolute; top: 0; left: 0; right: 0; z-index: 2; padding-top: 54px; height: 98px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding-left: 4px; padding-right: 8px; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px)">
+    <a href="Tasks.dc.html" style="height: 44px; display: flex; align-items: center; color: #7d7aff"><svg class="ic" viewBox="0 0 24 24" style="width: 30px; height: 30px; stroke-width: 2.2" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>My Tasks</a>
+    <a href="Menu.dc.html" aria-label="More actions" style="width: 44px; height: 44px; display: grid; place-items: center"><span style="width: 30px; height: 30px; border-radius: 15px; background: #2c2c2e; color: #7d7aff; display: grid; place-items: center"><svg class="ic" viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke-width: 2.4" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></span></a>
+  </nav>
+
+  <div style="height: 100%; overflow-y: auto; padding: 104px 16px 40px; box-sizing: border-box">
+    <h1 style="margin: 0 4px; font-size: 28px; line-height: 34px; font-weight: 700">Split Utility Bills</h1>
+    <p style="margin: 6px 4px 0; font-size: 15px; color: rgba(235, 235, 245, 0.6); display: flex; align-items: center; gap: 6px"><span style="width: 9px; height: 9px; border-radius: 3px; background: #ff9f0a"></span>Personal · PER-201</p>
+
+    <div style="margin-top: 22px; background: #1c1c1e; border-radius: 12px; overflow: hidden">
+      <button onClick="{{cycle}}" style="width: 100%; border: 0; background: transparent; color: inherit; font: inherit; display: flex; align-items: center; gap: 12px; padding: 0 0 0 16px; min-height: 48px; text-align: left">
+        <span style="width: 30px; height: 30px; border-radius: 7px; background: {{status.c}}; display: grid; place-items: center; color: #000"><svg class="ic" viewBox="0 0 24 24" style="width: 18px; height: 18px" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <span style="flex: 1; display: flex; align-items: center; align-self: stretch; padding-right: 14px; border-bottom: 1px solid #38383a"><span style="flex: 1">Status</span><span style="color: rgba(235, 235, 245, 0.6)">{{status.name}}</span><svg class="ic" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-left: 4px; color: rgba(235, 235, 245, 0.6)" aria-hidden="true"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg></span>
+      </button>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 0 0 0 16px; min-height: 48px">
+        <span style="width: 30px; height: 30px; border-radius: 7px; background: #ff453a; display: grid; place-items: center; color: #fff"><svg class="ic" viewBox="0 0 24 24" style="width: 18px; height: 18px" aria-hidden="true"><path d="M3 12h.01"/><path d="M8 12h13"/><path d="M3 18h.01"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M8 6h13"/></svg></span>
+        <span style="flex: 1; display: flex; align-items: center; align-self: stretch; padding-right: 14px; border-bottom: 1px solid #38383a"><span style="flex: 1">Priority</span><span style="color: rgba(235, 235, 245, 0.6)">High</span></span>
+      </div>
+      <label style="display: flex; align-items: center; gap: 12px; padding: 0 0 0 16px; min-height: 48px">
+        <span style="width: 30px; height: 30px; border-radius: 7px; background: #ff9f0a; display: grid; place-items: center; color: #000"><svg class="ic" viewBox="0 0 24 24" style="width: 18px; height: 18px" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg></span>
+        <span style="flex: 1">Flag</span>
+        <input type="checkbox" checked="{{flag}}" onChange="{{toggleFlag}}" style="position: absolute; opacity: 0; width: 1px; height: 1px">
+        <span aria-hidden="true" style="margin-right: 14px; width: 51px; height: 31px; border-radius: 16px; background: {{flagTrack}}; position: relative; transition: background 0.2s"><span style="position: absolute; top: 2px; left: {{flagKnob}}; width: 27px; height: 27px; border-radius: 14px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: left 0.2s"></span></span>
+      </label>
+    </div>
+
+    <div style="margin-top: 22px; background: #1c1c1e; border-radius: 12px; overflow: hidden">
+      <label style="display: flex; align-items: center; gap: 12px; padding: 0 0 0 16px; min-height: 56px">
+        <span style="width: 30px; height: 30px; border-radius: 7px; background: #ff453a; display: grid; place-items: center; color: #fff"><svg class="ic" viewBox="0 0 24 24" style="width: 18px; height: 18px" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></span>
+        <span style="flex: 1; display: flex; align-items: center; align-self: stretch; border-bottom: 1px solid #38383a; padding-right: 14px">
+          <span style="flex: 1; display: flex; flex-direction: column"><span>Date</span><sc-if value="{{dateOn}}" hint-placeholder-val="{{true}}"><span style="font-size: 15px; color: #7d7aff">Today</span></sc-if></span>
+          <input type="checkbox" checked="{{dateOn}}" onChange="{{toggleDate}}" style="position: absolute; opacity: 0; width: 1px; height: 1px">
+          <span aria-hidden="true" style="width: 51px; height: 31px; border-radius: 16px; background: {{dateTrack}}; position: relative; transition: background 0.2s"><span style="position: absolute; top: 2px; left: {{dateKnob}}; width: 27px; height: 27px; border-radius: 14px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: left 0.2s"></span></span>
+        </span>
+      </label>
+      <label style="display: flex; align-items: center; gap: 12px; padding: 0 0 0 16px; min-height: 56px">
+        <span style="width: 30px; height: 30px; border-radius: 7px; background: #0a84ff; display: grid; place-items: center; color: #fff"><svg class="ic" viewBox="0 0 24 24" style="width: 18px; height: 18px" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <span style="flex: 1; display: flex; align-items: center; align-self: stretch; border-bottom: 1px solid #38383a; padding-right: 14px">
+          <span style="flex: 1; display: flex; flex-direction: column"><span>Time</span><sc-if value="{{timeOn}}" hint-placeholder-val="{{true}}"><span style="font-size: 15px; color: #7d7aff">6:00 PM</span></sc-if></span>
+          <input type="checkbox" checked="{{timeOn}}" onChange="{{toggleTime}}" style="position: absolute; opacity: 0; width: 1px; height: 1px">
+          <span aria-hidden="true" style="width: 51px; height: 31px; border-radius: 16px; background: {{timeTrack}}; position: relative; transition: background 0.2s"><span style="position: absolute; top: 2px; left: {{timeKnob}}; width: 27px; height: 27px; border-radius: 14px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: left 0.2s"></span></span>
+        </span>
+      </label>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 0 0 0 16px; min-height: 48px">
+        <span style="width: 30px; height: 30px; border-radius: 7px; background: #636366; display: grid; place-items: center; color: #fff"><svg class="ic" viewBox="0 0 24 24" style="width: 18px; height: 18px" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></span>
+        <span style="flex: 1; display: flex; align-items: center; align-self: stretch; padding-right: 14px"><span style="flex: 1">Repeat</span><span style="color: rgba(235, 235, 245, 0.6)">Monthly</span><svg class="ic" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-left: 4px; color: rgba(235, 235, 245, 0.3)" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+      </div>
+    </div>
+
+    <div style="margin-top: 22px; background: #1c1c1e; border-radius: 12px; overflow: hidden">
+      <a href="Board.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 0 0 0 16px; min-height: 48px">
+        <span style="width: 30px; height: 30px; border-radius: 7px; background: #ff9f0a; display: grid; place-items: center; color: #000"><svg class="ic" viewBox="0 0 24 24" style="width: 18px; height: 18px" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></span>
+        <span style="flex: 1; display: flex; align-items: center; align-self: stretch; padding-right: 14px; border-bottom: 1px solid #38383a"><span style="flex: 1">Project</span><span style="color: rgba(235, 235, 245, 0.6)">Personal</span><svg class="ic" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-left: 4px; color: rgba(235, 235, 245, 0.3)" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 0 0 0 16px; min-height: 48px">
+        <span style="width: 30px; height: 30px; border-radius: 7px; background: #30d158; display: grid; place-items: center; color: #000"><svg class="ic" viewBox="0 0 24 24" style="width: 18px; height: 18px" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg></span>
+        <span style="flex: 1; display: flex; align-items: center; align-self: stretch; padding-right: 14px"><span style="flex: 1">Labels</span><span style="color: rgba(235, 235, 245, 0.6)">Bills, Home</span></span>
+      </div>
+    </div>
+
+    <h2 style="margin: 26px 20px 8px; font-size: 13px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; color: rgba(235, 235, 245, 0.6)">Subtasks · {{doneCount}} of {{total}}</h2>
+    <div style="background: #1c1c1e; border-radius: 12px; overflow: hidden">
+      <sc-for list="{{subs}}" as="s" hint-placeholder-count="3">
+        <div style="display: flex; align-items: center; min-height: 48px">
+          <button onClick="{{s.toggle}}" aria-label="{{s.label}}" style="width: 50px; height: 48px; border: 0; background: transparent; display: grid; place-items: center; flex-shrink: 0">
+            <sc-if value="{{s.done}}" hint-placeholder-val="{{false}}"><span style="width: 22px; height: 22px; border-radius: 11px; background: #5e5ce6; color: #fff; display: grid; place-items: center"><svg class="ic" viewBox="0 0 24 24" style="width: 13px; height: 13px; stroke-width: 3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span></sc-if>
+            <sc-if value="{{s.open}}" hint-placeholder-val="{{true}}"><span style="width: 22px; height: 22px; border-radius: 11px; border: 2px solid #636366; box-sizing: border-box"></span></sc-if>
+          </button>
+          <span style="flex: 1; align-self: stretch; display: flex; align-items: center; border-bottom: 1px solid #38383a; color: {{s.color}}; text-decoration: {{s.strike}}">{{s.t}}</span>
+        </div>
+      </sc-for>
+      <button style="width: 100%; border: 0; background: transparent; color: #7d7aff; font: inherit; display: flex; align-items: center; gap: 12px; min-height: 48px; padding-left: 14px"><svg class="ic" viewBox="0 0 24 24" style="width: 22px; height: 22px" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Add Subtask</button>
+    </div>
+
+    <h2 style="margin: 26px 20px 8px; font-size: 13px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; color: rgba(235, 235, 245, 0.6)">Notes</h2>
+    <label style="display: block; background: #1c1c1e; border-radius: 12px; padding: 12px 16px">
+      <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Notes</span>
+      <textarea rows="3" style="width: 100%; box-sizing: border-box; border: 0; background: transparent; color: #ffffff; font: 17px/1.35 -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif; resize: none; outline: none">Split three ways. Send the Venmo requests once the PG&amp;E bill posts.</textarea>
+    </label>
+    <p style="margin: 10px 20px 0; font-size: 13px; color: rgba(235, 235, 245, 0.6)">Created Oct 12 · Synced just now</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":393,"height":852}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { st: 1, flag: true, date: true, time: true, subs: [true, false, false] };
+  }
+  renderVals() {
+    const ST = [
+      { name: 'Backlog', c: '#8e8e93' },
+      { name: 'To Do', c: '#64d2ff' },
+      { name: 'In Progress', c: '#ff9f0a' },
+      { name: 'Review', c: '#bf5af2' },
+      { name: 'Done', c: '#30d158' },
+    ];
+    const s = this.state;
+    const sw = on => ({ track: on ? '#30d158' : '#39393d', knob: on ? '22px' : '2px' });
+    const f = sw(s.flag), d = sw(s.date), t = sw(s.time && s.date);
+    const titles = ['Collect PG&E and water bills', 'Work out each share', 'Send Venmo requests'];
+    const subs = titles.map((title, i) => ({
+      t: title,
+      done: s.subs[i],
+      open: !s.subs[i],
+      color: s.subs[i] ? 'rgba(235, 235, 245, 0.6)' : '#ffffff',
+      strike: s.subs[i] ? 'line-through' : 'none',
+      label: (s.subs[i] ? 'Mark not done: ' : 'Complete: ') + title,
+      toggle: () => this.setState({ subs: this.state.subs.map((v, j) => (j === i ? !v : v)) }),
+    }));
+    return {
+      status: ST[s.st],
+      cycle: () => this.setState({ st: (this.state.st + 1) % ST.length }),
+      flag: s.flag, flagTrack: f.track, flagKnob: f.knob,
+      dateOn: s.date, dateTrack: d.track, dateKnob: d.knob,
+      timeOn: s.time && s.date, timeTrack: t.track, timeKnob: t.knob,
+      toggleFlag: () => this.setState({ flag: !this.state.flag }),
+      toggleDate: () => this.setState({ date: !this.state.date }),
+      toggleTime: () => this.setState({ time: !(this.state.time && this.state.date), date: true }),
+      subs,
+      doneCount: s.subs.filter(Boolean).length,
+      total: titles.length,
+    };
+  }
+}
+</script>
+</body>
+</html>

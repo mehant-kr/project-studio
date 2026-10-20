@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pindrop · New task</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 393px; height: 852px; position: relative; overflow: hidden; background: #000000; color: #ffffff; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif; font-size: 17px; letter-spacing: -0.01em">
+  <div aria-hidden="true" style="position: absolute; inset: 0; padding: 110px 20px 0; opacity: 0.35; transform: scale(0.94); transform-origin: top center">
+    <div style="font-size: 34px; font-weight: 700">My Tasks</div>
+    <div style="margin-top: 14px; height: 36px; border-radius: 10px; background: #1c1c1e"></div>
+    <div style="margin-top: 26px; height: 58px; border-radius: 12px; background: #1c1c1e"></div>
+    <div style="margin-top: 26px; height: 116px; border-radius: 12px; background: #1c1c1e"></div>
+  </div>
+  <a href="Tasks.dc.html" aria-label="Dismiss" style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.5)"></a>
+
+  <section aria-label="New task" style="position: absolute; left: 0; right: 0; bottom: 291px; background: #1c1c1e; border-radius: 14px 14px 0 0">
+    <div aria-hidden="true" style="width: 36px; height: 5px; border-radius: 3px; background: #48484a; margin: 6px auto 0"></div>
+    <header style="display: flex; align-items: center; padding: 0 8px">
+      <a href="Tasks.dc.html" style="min-width: 70px; height: 44px; display: flex; align-items: center; padding: 0 8px; color: #7d7aff">Cancel</a>
+      <h1 style="flex: 1; margin: 0; text-align: center; font-size: 17px; font-weight: 600">New Task</h1>
+      <a href="Tasks.dc.html" style="min-width: 70px; height: 44px; display: flex; align-items: center; justify-content: flex-end; padding: 0 8px; color: #7d7aff; font-weight: 600">Add</a>
+    </header>
+    <div style="margin: 4px 16px 0; background: #2c2c2e; border-radius: 10px; overflow: hidden">
+      <label style="display: block; padding: 0 14px; border-bottom: 1px solid #38383a">
+        <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Title</span>
+        <input value="Pay phone bill" style="width: 100%; box-sizing: border-box; height: 44px; border: 0; background: transparent; color: #ffffff; font: 17px -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif; outline: none; caret-color: #7d7aff">
+      </label>
+      <label style="display: block; padding: 0 14px">
+        <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Notes</span>
+        <input placeholder="Notes" style="width: 100%; box-sizing: border-box; height: 44px; border: 0; background: transparent; color: #ffffff; font: 17px -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif; outline: none">
+      </label>
+    </div>
+    <div style="display: flex; gap: 8px; padding: 12px 16px 14px; overflow-x: auto">
+      <button onClick="{{nextDate}}" style="height: 34px; padding: 0 12px; border-radius: 17px; border: 0; background: {{dateBg}}; color: {{dateFg}}; font: 500 15px -apple-system, Inter, system-ui, sans-serif; display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0"><svg class="ic" viewBox="0 0 24 24" style="width: 16px; height: 16px" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>{{date}}</button>
+      <button onClick="{{nextProject}}" style="height: 34px; padding: 0 12px; border-radius: 17px; border: 0; background: #2c2c2e; color: #ffffff; font: 500 15px -apple-system, Inter, system-ui, sans-serif; display: flex; align-items: center; gap: 7px; white-space: nowrap; flex-shrink: 0"><span style="width: 9px; height: 9px; border-radius: 3px; background: {{projectColor}}"></span>{{project}}</button>
+      <button onClick="{{toggleFlag}}" aria-pressed="{{flag}}" style="height: 34px; padding: 0 12px; border-radius: 17px; border: 0; background: {{flagBg}}; color: {{flagFg}}; font: 500 15px -apple-system, Inter, system-ui, sans-serif; display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0"><svg class="ic" viewBox="0 0 24 24" style="width: 16px; height: 16px" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>Flag</button>
+      <button style="height: 34px; padding: 0 12px; border-radius: 17px; border: 0; background: #2c2c2e; color: #ffffff; font: 500 15px -apple-system, Inter, system-ui, sans-serif; display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0"><svg class="ic" viewBox="0 0 24 24" style="width: 16px; height: 16px" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/><path d="M6.38 18.7 4 21"/><path d="M17.64 18.67 20 21"/></svg>Remind me</button>
+    </div>
+  </section>
+
+  <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 291px; background: #1f1f21; padding: 8px 3px 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 11px">
+    <div style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; padding: 0 3px">
+      <sc-for list="{{row1}}" as="k" hint-placeholder-count="10"><span style="height: 42px; border-radius: 5px; background: #6b6b6e; display: grid; place-items: center; font-size: 22px; color: #ffffff; box-shadow: 0 1px 0 #000">{{k}}</span></sc-for>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 6px; padding: 0 20px">
+      <sc-for list="{{row2}}" as="k" hint-placeholder-count="9"><span style="height: 42px; border-radius: 5px; background: #6b6b6e; display: grid; place-items: center; font-size: 22px; color: #ffffff; box-shadow: 0 1px 0 #000">{{k}}</span></sc-for>
+    </div>
+    <div style="display: grid; grid-template-columns: 1.4fr repeat(7, minmax(0, 1fr)) 1.4fr; gap: 6px; padding: 0 3px">
+      <span style="height: 42px; border-radius: 5px; background: #464649"></span>
+      <sc-for list="{{row3}}" as="k" hint-placeholder-count="7"><span style="height: 42px; border-radius: 5px; background: #6b6b6e; display: grid; place-items: center; font-size: 22px; color: #ffffff; box-shadow: 0 1px 0 #000">{{k}}</span></sc-for>
+      <span style="height: 42px; border-radius: 5px; background: #464649"></span>
+    </div>
+    <div style="display: grid; grid-template-columns: 1.2fr 4fr 1.6fr; gap: 6px; padding: 0 3px">
+      <span style="height: 42px; border-radius: 5px; background: #464649; display: grid; place-items: center; font-size: 16px">123</span>
+      <span style="height: 42px; border-radius: 5px; background: #6b6b6e; display: grid; place-items: center; font-size: 16px">space</span>
+      <span style="height: 42px; border-radius: 5px; background: #5e5ce6; display: grid; place-items: center; font-size: 16px">done</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":393,"height":852}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { d: 1, p: 0, flag: false };
+  }
+  renderVals() {
+    const dates = ['Today', 'Tomorrow', 'This Weekend', 'Next Week', 'No Date'];
+    const projects = [['Personal', '#ff9f0a'], ['Reinforcement Learning', '#5e5ce6']];
+    const s = this.state;
+    const dated = dates[s.d] !== 'No Date';
+    return {
+      date: dates[s.d],
+      dateBg: dated ? 'rgba(125, 122, 255, 0.2)' : '#2c2c2e',
+      dateFg: dated ? '#a9a7ff' : '#ffffff',
+      project: projects[s.p][0],
+      projectColor: projects[s.p][1],
+      flag: s.flag,
+      flagBg: s.flag ? 'rgba(255, 159, 10, 0.2)' : '#2c2c2e',
+      flagFg: s.flag ? '#ffb340' : '#ffffff',
+      nextDate: () => this.setState({ d: (this.state.d + 1) % dates.length }),
+      nextProject: () => this.setState({ p: (this.state.p + 1) % projects.length }),
+      toggleFlag: () => this.setState({ flag: !this.state.flag }),
+      row1: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+      row2: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+      row3: ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
+    };
+  }
+}
+</script>
+</body>
+</html>
