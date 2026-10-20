@@ -129,7 +129,7 @@
     z-index: 45;
     background: var(--surface);
     border-top: 1px solid var(--border);
-    padding: 4px 6px calc(4px + env(safe-area-inset-bottom, 0px));
+    padding: 4px calc(6px + env(safe-area-inset-right, 0px)) calc(4px + env(safe-area-inset-bottom, 0px)) calc(6px + env(safe-area-inset-left, 0px));
   }
   .bottomnav button {
     flex: 1;
