@@ -14,7 +14,8 @@ export function clearDropMarks() {
   $$('.drop-before,.drop-after').forEach(x => x.classList.remove('drop-before', 'drop-after'));
   $$('.dragging').forEach(x => x.classList.remove('dragging'));
 }
-document.addEventListener('dragstart', e => {
+/* the handlers are exported so touch dragging (touch-drag.js) can drive them with synthetic events */
+export function dragStart(e) {
   const card = e.target.closest?.('[data-drag-card]'),
     row = e.target.closest?.('[data-drag-row]'),
     cal = e.target.closest?.('[data-drag-cal]'),
@@ -28,14 +29,14 @@ document.addEventListener('dragstart', e => {
       : cal
         ? { type: 'cal', id: cal.dataset.dragCal }
         : { type: 'proj', id: sp.dataset.dragProj };
-  e.dataTransfer.effectAllowed = 'move';
+  if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
   try {
-    e.dataTransfer.setData('text/plain', DRAG.id);
+    e.dataTransfer?.setData('text/plain', DRAG.id);
   } catch {
     /* not supported here; safe to skip */
   }
   const vis = row ? row.closest('.trow') : el;
-  if (row)
+  if (row && e.dataTransfer)
     try {
       e.dataTransfer.setDragImage(vis, 20, 18);
     } catch {
@@ -43,12 +44,12 @@ document.addEventListener('dragstart', e => {
     }
   S.ui.pop = null;
   setTimeout(() => vis.classList.add('dragging'), 0);
-});
-document.addEventListener('dragend', () => {
+}
+export function dragEnd() {
   DRAG = null;
   clearDropMarks();
-});
-document.addEventListener('dragover', e => {
+}
+export function dragOver(e) {
   const hasFiles = e.dataTransfer && [...(e.dataTransfer.types || [])].includes('Files');
   if (hasFiles) {
     const dz = e.target.closest?.('[data-dropzone],[data-dropzone-task],.drawer');
@@ -109,12 +110,12 @@ document.addEventListener('dragover', e => {
     it.querySelector('.sitem')?.classList.add('drop-before');
     DRAG.before = it.dataset.projDrop;
   }
-});
+}
 document.addEventListener('dragleave', e => {
   const dz = e.target.closest?.('.dropzone');
   if (dz && !dz.contains(e.relatedTarget)) dz.classList.remove('over');
 });
-document.addEventListener('drop', e => {
+export function drop(e) {
   const files = e.dataTransfer?.files;
   if (files && files.length && !DRAG) {
     const dz = e.target.closest?.('[data-dropzone],[data-dropzone-task],.drawer');
@@ -195,7 +196,11 @@ document.addEventListener('drop', e => {
     save();
     render();
   }
-});
+}
+document.addEventListener('dragstart', dragStart);
+document.addEventListener('dragend', dragEnd);
+document.addEventListener('dragover', dragOver);
+document.addEventListener('drop', drop);
 
 /* timeline bar drag + table column resize (pointer events) */
 document.addEventListener('pointerdown', e => {

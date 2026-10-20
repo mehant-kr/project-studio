@@ -56,6 +56,7 @@ import './actions/subtasks.js';
 import './actions/archive.js';
 import './actions/side-peek.js';
 import './actions/cloud.js';
+import './actions/touch-drag.js';
 import { S, D, task } from './core/store.js';
 import { isDesktop, isIOS, startDb, flushDb } from './core/db.js';
 import { CLOUD, cloudAvailable, startCloud } from './core/cloud.js';
