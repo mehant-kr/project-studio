@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pindrop · Timeline</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 393px; height: 852px; position: relative; overflow: hidden; background: #000000; color: #ffffff; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif; font-size: 17px; letter-spacing: -0.01em">
+  <div style="height: 100%; overflow-y: auto; padding: 54px 0 120px; box-sizing: border-box">
+    <nav style="display: flex; align-items: center; justify-content: space-between; height: 44px; padding: 0 8px 0 4px">
+      <a href="Main.dc.html" style="height: 44px; display: flex; align-items: center; color: #7d7aff"><svg class="ic" viewBox="0 0 24 24" style="width: 30px; height: 30px; stroke-width: 2.2" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Today</a>
+      <button aria-label="Filter projects" style="width: 44px; height: 44px; border: 0; background: transparent; color: #7d7aff; display: grid; place-items: center"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg></button>
+    </nav>
+    <header style="padding: 2px 20px 0; display: flex; align-items: baseline; justify-content: space-between">
+      <h1 style="margin: 0; font-size: 34px; line-height: 41px; font-weight: 700; letter-spacing: 0.01em">Timeline</h1>
+      <span style="font-size: 15px; color: rgba(235, 235, 245, 0.6)">Oct 14 – Nov 4</span>
+    </header>
+    <div role="group" aria-label="View" style="margin: 12px 16px 0; padding: 2px; border-radius: 9px; background: #1c1c1e; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr))">
+      <a href="Calendar.dc.html" style="height: 30px; border-radius: 7px; display: grid; place-items: center; font: 600 13px -apple-system, Inter, system-ui, sans-serif">Calendar</a>
+      <a href="Timeline.dc.html" aria-current="page" style="height: 30px; border-radius: 7px; background: #636366; display: grid; place-items: center; font: 600 13px -apple-system, Inter, system-ui, sans-serif">Timeline</a>
+    </div>
+    <div style="margin: 12px 16px 0; display: flex; align-items: center; justify-content: space-between">
+      <span style="font-size: 13px; color: rgba(235, 235, 245, 0.6)">Zoom</span>
+      <div role="group" aria-label="Zoom" style="padding: 2px; border-radius: 8px; background: #1c1c1e; display: flex">
+        <button onClick="{{weekZoom}}" aria-pressed="{{isWeek}}" style="height: 26px; padding: 0 14px; border: 0; border-radius: 6px; background: {{weekBg}}; color: #ffffff; font: 600 13px -apple-system, Inter, system-ui, sans-serif">Week</button>
+        <button onClick="{{monthZoom}}" aria-pressed="{{isMonth}}" style="height: 26px; padding: 0 14px; border: 0; border-radius: 6px; background: {{monthBg}}; color: #ffffff; font: 600 13px -apple-system, Inter, system-ui, sans-serif">Month</button>
+      </div>
+    </div>
+
+    <div style="margin: 12px 0 0; display: flex; border-top: 1px solid #38383a">
+      <div style="width: 128px; flex-shrink: 0; border-right: 1px solid #38383a; background: #000000">
+        <div style="height: 40px; border-bottom: 1px solid #38383a"></div>
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+          <sc-if value="{{r.isProject}}" hint-placeholder-val="{{false}}">
+            <div style="height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 12px; font-size: 13px; font-weight: 600; color: rgba(235, 235, 245, 0.6); text-transform: uppercase; letter-spacing: 0.02em; background: #0e0e10"><span style="width: 8px; height: 8px; border-radius: 3px; background: {{r.color}}; flex-shrink: 0"></span><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span></div>
+          </sc-if>
+          <sc-if value="{{r.isTask}}" hint-placeholder-val="{{true}}">
+            <a href="Detail.dc.html" style="height: 44px; display: flex; align-items: center; padding: 0 12px; font-size: 14px; border-bottom: 1px solid #1c1c1e"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span></a>
+          </sc-if>
+        </sc-for>
+      </div>
+      <div style="flex: 1; min-width: 0; overflow-x: auto">
+        <div style="position: relative; width: {{totalW}}">
+          <div aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: {{todayX}}; width: 2px; background: #7d7aff; z-index: 2"></div>
+          <div aria-hidden="true" style="position: absolute; top: 4px; left: {{todayLabelX}}; z-index: 3; padding: 1px 6px; border-radius: 6px; background: #5e5ce6; font-size: 11px; font-weight: 600">Today</div>
+          <div style="height: 40px; display: flex; border-bottom: 1px solid #38383a">
+            <sc-for list="{{days}}" as="d" hint-placeholder-count="22">
+              <span style="width: {{dayW}}; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 4px; font-size: 11px; color: {{d.color}}; background: {{d.bg}}"><span>{{d.top}}</span><span style="font-size: 13px; font-weight: 600">{{d.num}}</span></span>
+            </sc-for>
+          </div>
+          <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+            <sc-if value="{{r.isProject}}" hint-placeholder-val="{{false}}"><div style="height: 34px; background: #0e0e10"></div></sc-if>
+            <sc-if value="{{r.isTask}}" hint-placeholder-val="{{true}}">
+              <div style="height: 44px; position: relative; border-bottom: 1px solid #1c1c1e">
+                <a href="Detail.dc.html" aria-label="{{r.barLabel}}" style="position: absolute; top: 9px; height: 26px; left: {{r.x}}; width: {{r.w}}; border-radius: 8px; background: {{r.fill}}; border: 1px solid {{r.color}}; box-sizing: border-box; display: flex; align-items: center; padding: 0 8px; overflow: hidden">
+                  <sc-if value="{{r.showText}}" hint-placeholder-val="{{true}}"><span style="font-size: 12px; font-weight: 600; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span></sc-if>
+                </a>
+              </div>
+            </sc-if>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav aria-label="Tabs" style="position: absolute; left: 14px; right: 90px; bottom: 26px; height: 66px; padding: 5px; box-sizing: border-box; border-radius: 33px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)), rgba(30, 30, 32, 0.55); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); border: 1px solid rgba(255, 255, 255, 0.14); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 1px rgba(255, 255, 255, 0.06), 0 12px 30px rgba(0, 0, 0, 0.55)">
+    <a href="Main.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 2px; justify-content: center; border-radius: 28px; color: #ffffff; font-size: 10px; font-weight: 600; background: radial-gradient(120% 100% at 30% 15%, rgba(130, 145, 255, 0.24), rgba(255, 255, 255, 0.07) 65%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.08)"><svg class="ic" viewBox="0 0 24 24" style="width: 26px; height: 26px" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>Today</a>
+    <a href="Tasks.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; justify-content: center; border-radius: 28px; color: rgba(255, 255, 255, 0.86); font-size: 10px; font-weight: 500"><svg class="ic" viewBox="0 0 24 24" style="width: 26px; height: 26px" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>My Tasks</a>
+    <a href="Projects.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; justify-content: center; border-radius: 28px; color: rgba(255, 255, 255, 0.86); font-size: 10px; font-weight: 500"><svg class="ic" viewBox="0 0 24 24" style="width: 26px; height: 26px" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>Projects</a>
+    <a href="Inbox.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; justify-content: center; border-radius: 28px; color: rgba(255, 255, 255, 0.86); font-size: 10px; font-weight: 500; position: relative"><svg class="ic" viewBox="0 0 24 24" style="width: 26px; height: 26px" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>Inbox<span style="position: absolute; top: 2px; left: 50%; margin-left: 5px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #ff453a; color: #fff; font-size: 12px; font-weight: 600; line-height: 18px; text-align: center">2</span></a>
+    <a href="Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 2px; justify-content: center; border-radius: 28px; color: rgba(255, 255, 255, 0.86); font-size: 10px; font-weight: 500"><svg class="ic" viewBox="0 0 24 24" style="width: 26px; height: 26px" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</a>
+  </nav>
+  <a href="QuickAdd.dc.html" aria-label="New task" style="position: absolute; right: 14px; bottom: 26px; width: 66px; height: 66px; border-radius: 33px; display: grid; place-items: center; color: #ffffff; background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.03)), rgba(94, 92, 230, 0.62); backdrop-filter: blur(24px) saturate(1.8); -webkit-backdrop-filter: blur(24px) saturate(1.8); border: 1px solid rgba(255, 255, 255, 0.22); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), inset 0 -2px 6px rgba(0, 0, 0, 0.18), 0 12px 30px rgba(0, 0, 0, 0.55), 0 6px 20px rgba(94, 92, 230, 0.35)"><svg class="ic" viewBox="0 0 24 24" style="width: 30px; height: 30px; stroke-width: 2.4" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":393,"height":852}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { zoom: 'week' };
+  }
+  renderVals() {
+    const week = this.state.zoom === 'week';
+    const W = week ? 46 : 16;
+    const DAYS = 22; // Oct 14 – Nov 4
+    const TODAY = 5; // Oct 19
+    const idx = (m, d) => (m === 10 ? d - 14 : 17 + d);
+    const projects = [
+      { name: 'Personal', color: '#ff9f0a', fill: 'rgba(255, 159, 10, 0.32)', tasks: [
+        ['Split Utility Bills', [10, 19], [10, 19]],
+        ['Split Costco Bill', [10, 20], [10, 20]],
+        ['Get OPT picture', [10, 19], [10, 21]],
+        ['Renew insurance', [10, 22], [10, 28]],
+      ] },
+      { name: 'Reinforcement Learning', color: '#7d7aff', fill: 'rgba(125, 122, 255, 0.34)', tasks: [
+        ['Study Quiz 2', [10, 16], [10, 19]],
+        ['Read PPO paper', [10, 20], [10, 22]],
+        ['Problem set 3', [10, 21], [10, 23]],
+        ['Final proposal', [10, 26], [11, 2]],
+      ] },
+      { name: 'Portfolio Website', color: '#0a84ff', fill: 'rgba(10, 132, 255, 0.32)', tasks: [
+        ['Design refresh', [10, 14], [10, 22]],
+        ['Case studies', [10, 21], [11, 4]],
+      ] },
+    ];
+    const rows = [];
+    projects.forEach(p => {
+      rows.push({ isProject: true, isTask: false, name: p.name, color: p.color });
+      p.tasks.forEach(([name, s, e]) => {
+        const a = idx(...s), b = idx(...e);
+        const width = (b - a + 1) * W - 4;
+        rows.push({
+          isProject: false, isTask: true, name,
+          color: p.color, fill: p.fill,
+          x: a * W + 2 + 'px', w: width + 'px',
+          showText: width >= 70,
+          barLabel: name + ', ' + (b > a ? (b - a + 1) + ' days' : '1 day'),
+        });
+      });
+    });
+    const letters = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    const days = [];
+    for (let i = 0; i < DAYS; i++) {
+      const isOct = i <= 17;
+      const num = isOct ? 14 + i : i - 17;
+      const dow = (i + 3) % 7; // Oct 14 is a Wednesday
+      const isToday = i === TODAY;
+      days.push({
+        num: week || dow === 1 || isToday ? String(num) : '',
+        top: week ? letters[dow] : dow === 1 ? (isOct ? 'Oct' : 'Nov') : '',
+        color: isToday ? '#a9a7ff' : dow === 0 || dow === 6 ? 'rgba(235, 235, 245, 0.45)' : 'rgba(235, 235, 245, 0.75)',
+        bg: dow === 0 || dow === 6 ? 'rgba(255, 255, 255, 0.03)' : 'transparent',
+      });
+    }
+    return {
+      rows,
+      days,
+      dayW: W + 'px',
+      totalW: DAYS * W + 'px',
+      todayX: TODAY * W + W / 2 - 1 + 'px',
+      todayLabelX: Math.max(2, TODAY * W + W / 2 - 22) + 'px',
+      isWeek: week,
+      isMonth: !week,
+      weekBg: week ? '#636366' : 'transparent',
+      monthBg: week ? 'transparent' : '#636366',
+      weekZoom: () => this.setState({ zoom: 'week' }),
+      monthZoom: () => this.setState({ zoom: 'month' }),
+    };
+  }
+}
+</script>
+</body>
+</html>

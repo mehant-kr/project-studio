@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pindrop · Long-press menu</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{color:inherit}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 393px; height: 852px; position: relative; overflow: hidden; background: #000000; color: #ffffff; font-family: -apple-system, 'SF Pro Text', Inter, system-ui, sans-serif; font-size: 17px; letter-spacing: -0.01em">
+  <div aria-hidden="true" style="position: absolute; inset: 0; padding: 110px 16px 0; filter: blur(14px); opacity: 0.55">
+    <div style="font-size: 34px; font-weight: 700; padding: 0 4px">My Tasks</div>
+    <div style="margin-top: 14px; height: 36px; border-radius: 10px; background: #1c1c1e"></div>
+    <div style="margin-top: 26px; height: 58px; border-radius: 12px; background: #1c1c1e"></div>
+    <div style="margin-top: 50px; height: 116px; border-radius: 12px; background: #1c1c1e"></div>
+    <div style="margin-top: 50px; height: 174px; border-radius: 12px; background: #1c1c1e"></div>
+  </div>
+  <a href="Tasks.dc.html" aria-label="Close menu" style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35)"></a>
+
+  <div style="position: absolute; left: 16px; right: 16px; top: 226px; display: flex; flex-direction: column; gap: 12px">
+    <a href="Detail.dc.html" style="background: #1c1c1e; border-radius: 14px; display: flex; align-items: center; min-height: 62px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); transform: scale(1.02)">
+      <span style="width: 52px; display: grid; place-items: center; flex-shrink: 0"><span style="width: 24px; height: 24px; border-radius: 12px; border: 2px solid #ff9f0a; box-sizing: border-box"></span></span>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px; padding: 10px 0"><span>Split Utility Bills</span><span style="font-size: 15px; color: rgba(235, 235, 245, 0.6)">Personal · Today, 6:00 PM</span></span>
+      <svg class="ic" viewBox="0 0 24 24" style="width: 17px; height: 17px; color: #ff9f0a; fill: #ff9f0a; margin-right: 16px" role="img" aria-label="Flagged"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>
+    </a>
+
+    <div role="menu" aria-label="Task actions" style="width: 250px; background: rgba(37, 37, 39, 0.96); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-radius: 14px; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5)">
+      <a role="menuitem" href="Tasks.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; border-bottom: 0.5px solid #48484a">Complete<svg class="ic" viewBox="0 0 24 24" style="width: 19px; height: 19px" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></a>
+      <button role="menuitem" onClick="{{toggleSnooze}}" aria-expanded="{{snoozeOpen}}" style="width: 100%; border: 0; background: {{snoozeBg}}; color: inherit; font: inherit; display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; border-bottom: 0.5px solid #48484a; text-align: left"><span>Snooze</span><svg class="ic" viewBox="0 0 24 24" style="width: 17px; height: 17px; transform: {{chev}}; transition: transform 0.2s" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+      <sc-if value="{{snoozeOpen}}" hint-placeholder-val="{{false}}">
+        <div style="background: rgba(0, 0, 0, 0.25)">
+          <sc-for list="{{snoozeOpts}}" as="o" hint-placeholder-count="4">
+            <a role="menuitem" href="Tasks.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px 0 28px; border-bottom: 0.5px solid #48484a"><span>{{o.name}}</span><span style="font-size: 15px; color: rgba(235, 235, 245, 0.6)">{{o.when}}</span></a>
+          </sc-for>
+        </div>
+      </sc-if>
+      <a role="menuitem" href="Projects.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; border-bottom: 0.5px solid #48484a">Move to Project<svg class="ic" viewBox="0 0 24 24" style="width: 19px; height: 19px" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></a>
+      <a role="menuitem" href="Tasks.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; border-bottom: 0.5px solid #48484a">Unflag<svg class="ic" viewBox="0 0 24 24" style="width: 19px; height: 19px" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg></a>
+      <a role="menuitem" href="Tasks.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; border-bottom: 0.5px solid #48484a">Copy Link<svg class="ic" viewBox="0 0 24 24" style="width: 19px; height: 19px" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></a>
+      <a role="menuitem" href="Tasks.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px">Share<svg class="ic" viewBox="0 0 24 24" style="width: 19px; height: 19px" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg></a>
+      <div aria-hidden="true" style="height: 8px; background: rgba(0, 0, 0, 0.35)"></div>
+      <a role="menuitem" href="Tasks.dc.html" style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; color: #ff6961">Delete<svg class="ic" viewBox="0 0 24 24" style="width: 19px; height: 19px" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":393,"height":852}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { snooze: false };
+  }
+  renderVals() {
+    const open = this.state.snooze;
+    return {
+      snoozeOpen: open,
+      snoozeBg: open ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+      chev: open ? 'rotate(90deg)' : 'none',
+      toggleSnooze: () => this.setState({ snooze: !this.state.snooze }),
+      snoozeOpts: [
+        { name: 'Later Today', when: '9:00 PM' },
+        { name: 'Tomorrow', when: 'Tue' },
+        { name: 'This Weekend', when: 'Sat' },
+        { name: 'Next Week', when: 'Mon' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

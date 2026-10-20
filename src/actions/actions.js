@@ -182,6 +182,11 @@ A.back = () => {
 };
 A.reload = () => render();
 A.openProject = el => go('project', { id: el.dataset.id, tab: S.prefs.defaultTab || 'board' });
+/* go to a route with one UI setting applied first (e.g. a phone Today tile opens My Tasks on "Today") */
+A.goWith = el => {
+  S.ui[el.dataset.k] = el.dataset.v;
+  A.go(el);
+};
 A.set = el => {
   const k = el.dataset.k;
   let v = el.dataset.v;

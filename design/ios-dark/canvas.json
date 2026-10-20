@@ -1,0 +1,28 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-20T03:25:00Z" },
+  "title": "Pindrop Studio for iPhone, dark",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 393, "h": 852, "title": "Today", "is_interactive": true, "radius": 52 },
+    "Tasks.dc.html": { "x": 473, "y": 0, "w": 393, "h": 852, "title": "My Tasks", "is_interactive": true, "radius": 52 },
+    "Detail.dc.html": { "x": 946, "y": 0, "w": 393, "h": 852, "title": "Task detail", "is_interactive": true, "radius": 52 },
+    "QuickAdd.dc.html": { "x": 1419, "y": 0, "w": 393, "h": 852, "title": "Quick add", "is_interactive": true, "radius": 52 },
+    "Menu.dc.html": { "x": 1892, "y": 0, "w": 393, "h": 852, "title": "Long-press menu", "is_interactive": true, "radius": 52 },
+    "Projects.dc.html": { "x": 0, "y": 1272, "w": 393, "h": 852, "title": "Projects", "is_interactive": true, "radius": 52 },
+    "Board.dc.html": { "x": 473, "y": 1272, "w": 393, "h": 852, "title": "Project board", "is_interactive": true, "radius": 52 },
+    "Inbox.dc.html": { "x": 946, "y": 1272, "w": 393, "h": 852, "title": "Inbox", "is_interactive": true, "radius": 52 },
+    "Settings.dc.html": { "x": 1419, "y": 1272, "w": 393, "h": 852, "title": "Settings", "is_interactive": true, "radius": 52 },
+    "Lock.dc.html": { "x": 1892, "y": 1272, "w": 393, "h": 852, "title": "Lock Screen", "is_interactive": true, "radius": 52 },
+    "Calendar.dc.html": { "x": 0, "y": 2544, "w": 393, "h": 852, "title": "Calendar", "is_interactive": true, "radius": 52 },
+    "Timeline.dc.html": { "x": 473, "y": 2544, "w": 393, "h": 852, "title": "Timeline", "is_interactive": true, "radius": 52 }
+  },
+  "order": ["Main.dc.html", "Tasks.dc.html", "Detail.dc.html", "QuickAdd.dc.html", "Menu.dc.html", "Projects.dc.html", "Board.dc.html", "Inbox.dc.html", "Settings.dc.html", "Lock.dc.html", "Calendar.dc.html", "Timeline.dc.html"],
+  "notes": {
+    "row1": { "x": 0, "y": -300, "text": "Daily flow", "kind": "title1", "maxW": 2285 },
+    "row2": { "x": 0, "y": 972, "text": "Projects, inbox & system", "kind": "title1", "maxW": 2285 },
+    "row3": { "x": 0, "y": 2244, "text": "Planning", "kind": "title1", "maxW": 866 }
+  },
+  "designSystems": []
+}

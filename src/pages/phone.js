@@ -1,7 +1,8 @@
 /* =====================================================================
    PHONE SCREENS: on phone-width screens (the iPhone app, mobile web),
-   Home, My Tasks, Projects and Inbox use these iOS-style layouts, from
-   the iOS prototype: large titles, grouped cards, segmented controls.
+   Today, My Tasks, Projects and Inbox use these iOS-style layouts.
+   Today follows the approved dark design (design/ios-dark/); the others
+   still use the earlier light prototype until they are rebuilt.
    Wider screens keep the regular pages.
    ===================================================================== */
 import { TODAY, ago, diffD, esc, fmtDate, parse } from '../core/utils.js';
@@ -12,9 +13,12 @@ import { pIcon } from '../ui/helpers.js';
 import { notifText } from './inbox.js';
 
 export const isPhone = () => matchMedia('(max-width: 640px)').matches;
-const SCREENS = { home: mHome, mytasks: mMyTasks, projects: mProjects, inbox: mInbox };
+const SCREENS = { home: iToday, mytasks: mMyTasks, projects: mProjects, inbox: mInbox };
 /* the phone screen for a route, or null to use the regular page */
 export const phoneScreen = route => (isPhone() && SCREENS[route] ? SCREENS[route] : null);
+/* routes already built in the iOS dark design (design/ios-dark/); the rest keep the light phone screens */
+const IOS = new Set(['home']);
+export const isIos = route => isPhone() && IOS.has(route);
 
 /* ---------- pieces ---------- */
 function dueOf(t) {
@@ -49,19 +53,30 @@ export function mTaskRow(t) {
 }
 const seg = (k, cur, opts) =>
   `<div class="m-seg" role="group">${opts.map(([v, n]) => `<button class="${cur === v ? 'on' : ''}" aria-pressed="${cur === v}" data-a="set" data-k="${k}" data-v="${v}">${n}</button>`).join('')}</div>`;
-const section = (title, more, body) => `<section class="m-sec"><div class="m-sec-h"><h2>${title}</h2>${more || ''}</div>${body}</section>`;
 const empty = (icon, title, text) => `<div class="m-empty">${ic(icon, 22)}<b>${title}</b><span>${text}</span></div>`;
 const myOpen = () => allTasks().filter(t => t.assignee === D().me && t.status !== 'done');
 
-/* ---------- Home ---------- */
-function mHome() {
+/* ---------- Today (iOS dark design, design/ios-dark/Main.dc.html) ---------- */
+const FLAG = ['urgent', 'high'];
+const flagged = t => FLAG.includes(t.priority);
+function iTaskRow(t) {
+  const p = proj(t.project);
+  const due = dueOf(t);
+  const meta = [p?.name, due.text].filter(Boolean).map(esc).join(' · ');
+  const flag = flagged(t);
+  return `<div class="ios-task" data-task-row="${t.id}">
+    <button class="ios-check" style="${flag ? '--ring:var(--amber)' : ''}" data-a="toggleDone" data-id="${t.id}" aria-label="Complete: ${esc(t.title)}"><span></span></button>
+    <button class="ios-task-b" data-a="openTask" data-id="${t.id}">
+      <span class="ios-task-t"><span class="ios-title">${esc(t.title)}</span>${meta ? `<span class="ios-meta ${due.cls === 'late' ? 'late' : ''}">${meta}</span>` : ''}</span>
+      ${flag ? `<span class="ios-flag" role="img" aria-label="Flagged">${ic('flag', 17)}</span>` : ''}
+    </button>
+  </div>`;
+}
+function iToday() {
   const d = D();
   const mine = myOpen();
-  const overdue = mine.filter(isOver).length;
-  const today = mine.filter(t => t.due && diffD(parse(t.due), TODAY) === 0).length;
-  const hour = new Date().getHours();
-  const first = (S.prefs.name || '').trim().split(/\s+/)[0];
-  const hello = `${hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'}${first && first !== 'You' ? ', ' + esc(first) : ''}`;
+  const day = t => (t.due ? diffD(parse(t.due), TODAY) : null);
+  const today = mine.filter(t => day(t) !== null && day(t) <= 0);
   const date = TODAY.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
   const next = mine
     .slice()
@@ -69,32 +84,41 @@ function mHome() {
     .slice(0, 5);
   const projs = visibleProjects()
     .filter(p => p.status !== 'complete')
-    .slice(0, 3);
-  const unread = d.notifs.some(n => !n.read);
-  const stat = (n, label, cls) => `<button class="m-stat" data-a="go" data-r="mytasks"><b class="${cls}">${n}</b><span>${label}</span></button>`;
-  return `<div class="m-page">
-    <div class="m-brand">${wsLogo(d.ws, 30)}<span>${esc(d.ws.name)}</span><span class="sp"></span>
-      <button class="m-ibtn" data-a="go" data-r="search" aria-label="Search">${ic('search', 20)}</button>
-      <button class="m-ibtn" data-a="go" data-r="inbox" aria-label="Inbox${unread ? ', unread notifications' : ''}">${ic('bell', 20)}${unread ? '<i class="m-dot"></i>' : ''}</button></div>
-    <header class="m-head"><h1>${hello}</h1><p>${date} · ${today ? `${today} task${today > 1 ? 's' : ''} due today` : 'nothing due today'}</p></header>
-    <div class="m-stats">${stat(mine.length, 'Open', '')}${stat(today, 'Due today', 'accent')}${stat(overdue, 'Overdue', overdue ? 'late' : '')}</div>
-    ${section(
-      'Up next',
-      `<button class="m-more" data-a="go" data-r="mytasks">See all</button>`,
-      next.length ? `<div class="m-card">${next.map(mTaskRow).join('')}</div>` : empty('circle-check', 'All clear', 'Tap + to add a task.'),
-    )}
+    .slice(0, 5);
+  const tile = (n, label, icon, c, act) =>
+    `<button class="ios-tile" ${act}><span class="ios-tile-top"><span class="ios-tile-ic" style="--c:${c}">${ic(icon, 18)}</span><b>${n}</b></span><span>${label}</span></button>`;
+  const more = r => `<button class="ios-more" data-a="go" data-r="${r}">See All</button>`;
+  return `<div class="ios-page">
+    <nav class="ios-nav">
+      <button class="ios-ws" data-a="go" data-r="settings" aria-label="Workspace and settings">${wsLogo(d.ws, 30)}</button>
+      <span class="ios-nav-r">
+        <button class="ios-ibtn" data-a="go" data-r="search" aria-label="Search">${ic('search', 22)}</button>
+        <button class="ios-ibtn" data-a="newTask" aria-label="New task">${ic('plus', 26)}</button>
+      </span>
+    </nav>
+    <header class="ios-head"><h1>Today</h1><p>${date}</p></header>
+    <div class="ios-tiles">
+      ${tile(today.length, 'Today', 'sun', '#5e5ce6', 'data-a="goWith" data-r="mytasks" data-k="mTaskFilter" data-v="today"')}
+      ${tile(mine.filter(t => t.due).length, 'Scheduled', 'calendar', '#ff453a', 'data-a="go" data-r="calendar"')}
+      ${tile(mine.length, 'All open', 'inbox', '#636366', 'data-a="goWith" data-r="mytasks" data-k="mTaskFilter" data-v="all"')}
+      ${tile(mine.filter(flagged).length, 'Flagged', 'flag', '#ff9f0a', 'data-a="goWith" data-r="mytasks" data-k="mTaskFilter" data-v="all"')}
+    </div>
+    <section class="ios-sec">
+      <div class="ios-sec-h"><h2>Up Next</h2>${more('mytasks')}</div>
+      ${next.length ? `<div class="ios-card">${next.map(iTaskRow).join('')}</div>` : `<div class="ios-card ios-empty"><b>All clear</b><span>Tap + to add a task.</span></div>`}
+    </section>
     ${
       projs.length
-        ? section(
-            'Projects',
-            `<button class="m-more" data-a="go" data-r="projects">See all</button>`,
-            `<div class="m-stack">${projs
-              .map(p => {
-                const pct = progressOf(p.id);
-                return `<button class="m-card m-proj-mini" data-a="go" data-r="project" data-id="${p.id}"><span class="m-proj-row">${pIcon(p, '', 15)}<b>${esc(p.name)}</b><span class="m-pct">${pct}%</span></span><span class="m-bar"><i style="width:${pct}%;background:${pColor(p)}"></i></span></button>`;
-              })
-              .join('')}</div>`,
-          )
+        ? `<section class="ios-sec">
+      <div class="ios-sec-h"><h2>Projects</h2>${more('projects')}</div>
+      <div class="ios-card">${projs
+        .map(p => {
+          const ts = tasksOf(p.id);
+          const done = ts.filter(t => t.status === 'done').length;
+          return `<button class="ios-proj" data-a="go" data-r="project" data-id="${p.id}"><span class="ios-proj-ic" style="--c:${pColor(p)}">${ic(p.icon, 17)}</span><span class="ios-proj-b"><span class="ios-proj-n">${esc(p.name)}</span><span class="ios-proj-c">${done} of ${ts.length}</span>${ic('chevron-right', 16)}</span></button>`;
+        })
+        .join('')}</div>
+    </section>`
         : ''
     }
   </div>`;
