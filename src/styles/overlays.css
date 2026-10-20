@@ -824,7 +824,7 @@
   }
 }
 /* swipe actions on task rows (actions/touch-swipe.js): the row slides over a coloured band */
-.trow.swiping {
+[data-task-row].swiping {
   position: relative;
   z-index: 2;
   background: var(--surface);

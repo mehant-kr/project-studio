@@ -59,6 +59,7 @@ import './actions/cloud.js';
 import './actions/touch-drag.js';
 import './actions/touch-swipe.js';
 import './actions/touch-sheet.js';
+import './actions/phone.js';
 import { S, D, task } from './core/store.js';
 import { isDesktop, isIOS, startDb, flushDb } from './core/db.js';
 import { CLOUD, cloudAvailable, startCloud } from './core/cloud.js';

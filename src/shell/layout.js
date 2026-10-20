@@ -5,6 +5,7 @@ import { PSTAT } from '../core/constants.js';
 import { D, S, allTasks, mem, pColor, proj, team, teamsList, visibleProjects } from '../core/store.js';
 import { av } from '../ui/helpers.js';
 import { ROUTE_NAMES } from './render.js';
+import { phoneScreen } from '../pages/phone.js';
 import { skeleton } from './skeletons.js';
 import { pageHome } from '../pages/home.js';
 import { pageOverview } from '../pages/overview.js';
@@ -29,7 +30,7 @@ import { pageArchive } from '../features/archive.js';
 export const slim = () => S.ui.collapsed && !S.ui.peek;
 export function renderShell() {
   const u = S.ui;
-  return `<button class="skip" data-a="skipToContent">Skip to content</button><div class="shell ${u.collapsed ? 'collapsed' : ''} ${u.collapsed && u.peek ? 'peek' : ''} ${u.mnav ? 'mnav' : ''} ${u.fx.tabs ? 'fx-tabs' : ''}">
+  return `<button class="skip" data-a="skipToContent">Skip to content</button><div class="shell ${phoneScreen(u.route) ? 'm-screen' : ''} ${u.collapsed ? 'collapsed' : ''} ${u.collapsed && u.peek ? 'peek' : ''} ${u.mnav ? 'mnav' : ''} ${u.fx.tabs ? 'fx-tabs' : ''}">
     ${renderSidebar()}
     ${u.mnav ? '<div class="side-scrim" data-a="closeMnav"></div>' : ''}
     <main class="main" id="main">
@@ -44,6 +45,9 @@ export function renderShell() {
 export function renderPage() {
   const r = S.ui.route;
   try {
+    // phones get the iOS-style screens where there is one
+    const phone = phoneScreen(r);
+    if (phone) return phone();
     const P = {
       home: pageHome,
       inbox: pageInbox,
@@ -204,11 +208,11 @@ export function renderTopbar() {
 }
 export function renderBottomNav() {
   const r = S.ui.route;
-  const unread = D().notifs.some(n => !n.read && n.type !== 'update');
+  const unread = D().notifs.filter(n => !n.read).length;
   const b = (route, label, icon, extra = '') =>
-    `<button class="${r === route ? 'on' : ''}" data-a="go" data-r="${route}">${ic(icon, 19)}<span>${label}</span>${extra}</button>`;
+    `<button class="${r === route ? 'on' : ''}" data-a="go" data-r="${route}" ${r === route ? 'aria-current="page"' : ''}>${ic(icon, 22)}<span>${label}</span>${extra}</button>`;
   return `<nav class="bottomnav" aria-label="Primary">
-    ${b('home', 'Home', 'house')}${b('mytasks', 'My Tasks', 'circle-check')}${b('projects', 'Projects', 'folder-kanban')}${b('inbox', 'Inbox', 'inbox', unread ? '<span class="bdot"></span>' : '')}
-    <button data-a="openMnav">${ic('ellipsis', 19)}<span>More</span></button>
+    ${b('home', 'Home', 'house')}${b('mytasks', 'My Tasks', 'circle-check')}${b('projects', 'Projects', 'folder-kanban')}${b('inbox', 'Inbox', 'inbox', unread ? `<span class="bcount" aria-label="${unread} unread">${unread > 99 ? '99+' : unread}</span>` : '')}
+    <button data-a="openMnav">${ic('ellipsis', 22)}<span>More</span></button>
   </nav>`;
 }
