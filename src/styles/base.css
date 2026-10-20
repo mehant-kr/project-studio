@@ -162,3 +162,27 @@ kbd,
     display: block;
   }
 }
+
+/* touch: holding a task starts a drag (actions/touch-drag.js), so no text selection or iOS callout */
+@media (hover: none) {
+  .trow,
+  .kcard,
+  .cev,
+  [data-drag-proj] {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+/* the copy of the item that follows the finger */
+.touch-ghost {
+  position: fixed;
+  z-index: 300;
+  margin: 0;
+  pointer-events: none;
+  background: var(--surface);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-pop);
+  opacity: 0.96;
+  transform: scale(1.03);
+}
