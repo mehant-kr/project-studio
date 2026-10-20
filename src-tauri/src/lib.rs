@@ -1,7 +1,10 @@
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    tauri::Builder::default()
-        .plugin(tauri_plugin_sql::Builder::new().build())
+    let builder = tauri::Builder::default().plugin(tauri_plugin_sql::Builder::new().build());
+    // haptics exist on phones only (the crate is a mobile-only dependency)
+    #[cfg(mobile)]
+    let builder = builder.plugin(tauri_plugin_haptics::init());
+    builder
         .setup(|app| {
             if cfg!(debug_assertions) {
                 app.handle().plugin(

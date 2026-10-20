@@ -64,6 +64,7 @@ import { isDesktop, isIOS, startDb, flushDb } from './core/db.js';
 import { CLOUD, cloudAvailable, startCloud } from './core/cloud.js';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { toast } from './ui/toast.js';
+import { setHaptics } from './core/haptics.js';
 import { A } from './actions/actions.js';
 import { ROUTE_NAMES, render, go } from './shell/render.js';
 
@@ -77,6 +78,11 @@ import { ROUTE_NAMES, render, go } from './shell/render.js';
     }
     // macOS: finish saving before the window closes; iOS has no window close
     if (!isIOS) getCurrentWindow().onCloseRequested(flushDb);
+    // real haptics on iPhone (core/haptics.js is a no-op elsewhere)
+    if (isIOS)
+      import('@tauri-apps/plugin-haptics')
+        .then(h => setHaptics(kind => (kind === 'success' ? h.notificationFeedback('success') : h.impactFeedback(kind))))
+        .catch(() => {});
     // iOS can end a backgrounded app without warning, so save the moment the app is hidden
     document.addEventListener('visibilitychange', () => document.visibilityState === 'hidden' && flushDb());
   }
