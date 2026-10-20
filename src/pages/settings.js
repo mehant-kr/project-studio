@@ -1,7 +1,7 @@
 /* =====================================================================
    SETTINGS · AUTH · ONBOARDING · DESIGN SYSTEM · SYSTEM STATES
    ===================================================================== */
-import { dOff, esc, fmtDate } from '../core/utils.js';
+import { ago, dOff, esc, fmtDate } from '../core/utils.js';
 import { ic, wsLogo } from '../core/icons.js';
 import { D, S, me } from '../core/store.js';
 import { av, pIcon } from '../ui/helpers.js';
@@ -9,6 +9,7 @@ import { permsTable, teamsGrid } from './members.js';
 import { page404 } from './errors.js';
 import { SHORTCUTS } from '../overlays/modals.js';
 import { DB, isDesktop } from '../core/db.js';
+import { CLOUD, cloudAvailable, cloudConfigured } from '../core/cloud.js';
 
 export const SET_NAV = [
   [
@@ -18,7 +19,7 @@ export const SET_NAV = [
       ['appearance', 'Appearance', 'palette'],
       ['language', 'Language', 'languages'],
       ['datetime', 'Date & time', 'clock'],
-      ...(isDesktop ? [['data', 'Data & storage', 'database']] : []),
+      ...(isDesktop || cloudAvailable ? [['data', 'Data & storage', 'database']] : []),
     ],
   ],
   [
@@ -223,7 +224,8 @@ export function settingsBody(sec, title) {
           `<button class="btn btn-secondary btn-sm" data-a="copyDbPath">${ic('copy', 13)}Copy path</button>`,
         ) +
         srow('Back up', 'Quit Pindrop Studio, then copy pindrop.db. Copy it back to the same folder to restore.', '') +
-        `</div>`
+        `</div>` +
+        cloudBlock()
       );
     case 'members':
       return (
@@ -437,6 +439,44 @@ export function settingsBody(sec, title) {
       );
   }
   return page404();
+}
+/* Settings → Data & storage: cloud sync sign-in and status (desktop and iPhone apps) */
+function cloudBlock() {
+  const C = CLOUD;
+  const h = `<div class="sblock"><h2>Cloud sync</h2>`;
+  if (!cloudConfigured)
+    return (
+      h +
+      `<p class="muted" style="font-size:13px;margin:10px 0 0">Cloud sync isn't set up in this build. Add your Supabase project's URL and anon key to <span class="mono">.env.local</span> and rebuild; the README has the steps.</p></div>`
+    );
+  const err = S.ui.errors.cloud ? `<span class="err">${ic('circle-alert', 12)}${esc(S.ui.errors.cloud)}</span>` : '';
+  const busy = S.ui.cloudBusy ? 'disabled aria-busy="true"' : '';
+  let body;
+  if (C.status === 'off') body = `<p class="muted" style="font-size:13px;margin:10px 0 0">Connecting…</p>`;
+  else if (C.status === 'signedout')
+    body = `<p class="muted" style="font-size:13px;margin:10px 0 12px">Sign in to keep this workspace in sync across your Mac and iPhone. We'll email you a 6-digit code.</p>
+      <form data-submit="cloudSendCode" class="col" style="gap:8px;max-width:360px"><label class="label" for="cloud-email">Email</label>
+      <div class="row"><input class="input ${S.ui.errors.cloud ? 'is-error' : ''}" id="cloud-email" type="email" autocomplete="email" placeholder="you@example.com" value="${esc(C.email)}" style="flex:1">
+      <button class="btn btn-primary" data-a="cloudSendCode" ${busy}>Send code</button></div>${err}</form>`;
+  else if (C.status === 'codesent')
+    body = `<p class="muted" style="font-size:13px;margin:10px 0 12px">Enter the 6-digit code sent to <b>${esc(C.email)}</b>.</p>
+      <form data-submit="cloudVerify" class="col" style="gap:8px;max-width:360px"><label class="label" for="cloud-code">Code</label>
+      <div class="row"><input class="input mono ${S.ui.errors.cloud ? 'is-error' : ''}" id="cloud-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" style="width:140px;letter-spacing:.2em" autofocus>
+      <button class="btn btn-primary" data-a="cloudVerify" ${busy}>Verify</button><button type="button" class="btn btn-ghost" data-a="cloudChangeEmail">Use a different email</button></div>${err}</form>`;
+  else if (C.status === 'choose')
+    body = `<div class="alert warn" style="margin-top:10px">${ic('triangle-alert', 15)}<div><b>This device and your cloud account both have a workspace.</b><div class="muted">Choose which one to keep. The other is replaced.</div></div></div>
+      <div class="row" style="margin-top:12px;flex-wrap:wrap"><button class="btn btn-primary" data-a="cloudChoose" data-v="cloud" ${busy}>Use the cloud workspace</button><button class="btn btn-danger-ghost" data-a="cloudChoose" data-v="local" ${busy}>Replace the cloud with this device's workspace</button></div>`;
+  else
+    body =
+      (C.status === 'error'
+        ? `<div class="alert danger" style="margin-top:10px">${ic('circle-alert', 15)}<div><b>Sync paused.</b><div class="muted">${esc(C.error)}</div></div></div>`
+        : '') +
+      srow(
+        'Signed in',
+        `${esc(C.email)}${C.lastSync ? ` · last synced ${ago(C.lastSync)}` : ''}`,
+        `<button class="btn btn-secondary btn-sm" data-a="cloudSyncNow" ${busy}>${ic('refresh-cw', 13)}${C.status === 'error' ? 'Retry' : 'Sync now'}</button><button class="btn btn-ghost btn-sm" data-a="cloudSignOut">Sign out</button>`,
+      );
+  return h + body + `</div>`;
 }
 export function strengthMeter(pw) {
   let s = 0;

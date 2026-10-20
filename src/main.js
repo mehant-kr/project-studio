@@ -55,8 +55,10 @@ import './actions/teams.js';
 import './actions/subtasks.js';
 import './actions/archive.js';
 import './actions/side-peek.js';
-import { S, D } from './core/store.js';
+import './actions/cloud.js';
+import { S, D, task } from './core/store.js';
 import { isDesktop, startDb, flushDb } from './core/db.js';
+import { CLOUD, cloudAvailable, startCloud } from './core/cloud.js';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { toast } from './ui/toast.js';
 import { A } from './actions/actions.js';
@@ -71,6 +73,23 @@ import { ROUTE_NAMES, render, go } from './shell/render.js';
       setTimeout(() => toast(`Couldn't open the database; changes are kept in the app cache only. ${e}`, { kind: 'err', ms: 10000 }));
     }
     getCurrentWindow().onCloseRequested(flushDb);
+  }
+  if (cloudAvailable) {
+    // cloud sync runs alongside: it never blocks start-up, and the app works offline
+    let lastErr = '';
+    startCloud({
+      onChange: what => {
+        if (what === 'data') {
+          if (S.ui.drawer && !task(S.ui.drawer)) S.ui.drawer = null;
+          if (!S.ui.auth) render();
+          return;
+        }
+        if (CLOUD.status === 'error' && CLOUD.error !== lastErr) toast(`Cloud sync paused. ${CLOUD.error}`, { kind: 'err', ms: 8000 });
+        lastErr = CLOUD.status === 'error' ? CLOUD.error : '';
+        // only Settings shows the sync status; re-rendering elsewhere could disturb typing
+        if (S.ui.route === 'settings' && !S.ui.auth) render();
+      },
+    }).catch(e => toast(`Cloud sync couldn't start. ${e?.message || e}`, { kind: 'err', ms: 8000 }));
   }
   document.documentElement.lang = 'en';
   if (!document.getElementById('sr-live')) {

@@ -89,7 +89,25 @@ record (task, project, comment, …) is one row in the `records` table, stored a
 writes only the rows that changed, in a single statement. `localStorage` stays as a cache, and on
 start the newer copy wins. The web version is unchanged and keeps using `localStorage` only.
 
-The app is unsigned: the first time, right-click it in Finder and choose **Open**.
+The app is unsigned. If macOS won't open it, go to System Settings → Privacy & Security and choose
+**Open Anyway**.
+
+### Cloud sync (Supabase)
+
+The desktop app can also sync the workspace to a Supabase (Postgres) project, so it is shared with
+other signed-in devices (`src/core/cloud.js`). The local database stays the offline copy. Setup, once:
+
+1. Create a project at [supabase.com](https://supabase.com).
+2. In the SQL editor, run `supabase/migrations/0001_records.sql` (the `records` table, row-level
+   security and realtime).
+3. Authentication → Email Templates: in both **Confirm signup** and **Magic Link**, put `{{ .Token }}`
+   in the message so the email contains the 6-digit sign-in code (`supabase/templates/code.html` is a
+   ready-made body).
+4. Copy `.env.example` to `.env.local` and fill in the project URL and anon key (Project Settings →
+   API), then rebuild with `npm run desktop:build`.
+
+Then sign in from **Settings → Data & storage → Cloud sync**. Each record syncs on its own and the
+newest write wins; other devices receive changes live.
 
 ## Continuous integration
 

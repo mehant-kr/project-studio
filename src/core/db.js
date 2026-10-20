@@ -9,6 +9,7 @@ import { isTauri } from '@tauri-apps/api/core';
 import { appConfigDir, join } from '@tauri-apps/api/path';
 import Database from '@tauri-apps/plugin-sql';
 import { applyPersisted, flushSave, lastSavedAt, onSave, persistedState } from './store.js';
+import { fromRows, key, toRows } from './records.js';
 
 export const isDesktop = isTauri();
 export const DB = { path: '', error: '' };
@@ -24,50 +25,6 @@ const SCHEMA = `CREATE TABLE IF NOT EXISTS records (
 const UPSERT = `INSERT INTO records (kind, id, doc)
   SELECT value ->> 0, value ->> 1, value ->> 2 FROM json_each($1) WHERE true
   ON CONFLICT (kind, id) DO UPDATE SET doc = excluded.doc`;
-
-/* ---------- workspace state <-> rows ---------- */
-const isList = v => Array.isArray(v) && v.every(x => x && typeof x === 'object' && typeof x.id === 'string') && new Set(v.map(x => x.id)).size === v.length;
-const key = (kind, id) => kind + '\u001f' + id;
-function toRows(j) {
-  const rows = new Map();
-  const put = (kind, id, v) => rows.set(key(kind, id), [kind, id, JSON.stringify(v)]);
-  for (const [k, v] of Object.entries(j.data)) {
-    if (isList(v)) {
-      v.forEach(r => put(k, r.id, r));
-      put(
-        '_meta',
-        'order:' + k,
-        v.map(r => r.id),
-      );
-    } else put('_meta', 'data:' + k, v);
-  }
-  put('_meta', 'prefs', j.prefs);
-  put('_meta', 'views', j.views);
-  put('_meta', 'collapsed', j.collapsed);
-  put('_meta', 'savedAt', j.savedAt);
-  return rows;
-}
-function fromRows(list) {
-  const meta = {},
-    kinds = {};
-  for (const { kind, id, doc } of list) {
-    const v = JSON.parse(doc);
-    if (kind === '_meta') meta[id] = v;
-    else (kinds[kind] ||= new Map()).set(id, v);
-  }
-  if (!('savedAt' in meta)) return null;
-  const data = {};
-  for (const [id, v] of Object.entries(meta)) {
-    if (id.startsWith('data:')) data[id.slice(5)] = v;
-    if (id.startsWith('order:')) {
-      const k = id.slice(6),
-        recs = kinds[k] || new Map();
-      data[k] = v.map(rid => recs.get(rid)).filter(Boolean);
-      for (const [rid, r] of recs) if (!v.includes(rid)) data[k].push(r);
-    }
-  }
-  return { data, prefs: meta.prefs, views: meta.views, collapsed: meta.collapsed, savedAt: meta.savedAt };
-}
 
 /* ---------- writing: diff against what the database holds, one save at a time ---------- */
 let written = new Map(),
